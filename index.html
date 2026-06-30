@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Market Analysis Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border-left: 5px solid #e94560;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .header .subtitle {
+            font-size: 1.1em;
+            color: #b0b0b0;
+            margin-bottom: 5px;
+        }
+
+        .last-updated {
+            color: #4db8ff;
+            font-size: 0.9em;
+            margin-top: 15px;
+        }
+
+        .market-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #e94560;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .metric-label {
+            font-size: 0.9em;
+            color: #b0b0b0;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .metric-change {
+            font-size: 0.85em;
+        }
+
+        .positive {
+            color: #4caf50;
+        }
+
+        .negative {
+            color: #f44336;
+        }
+
+        .neutral {
+            color: #ff9800;
+        }
+
+        .section {
+            background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-top: 3px solid #e94560;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .section h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h3 {
+            font-size: 1.3em;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            color: #4db8ff;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 4px solid;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .alert-critical {
+            background: rgba(244, 67, 54, 0.1);
+            border-color: #f44336;
+        }
+
+        .alert-warning {
+            background: rgba(255, 152, 0, 0.1);
+            border-color: #ff9800;
+        }
+
+        .alert-info {
+            background: rgba(77, 184, 255, 0.1);
+            border-color: #4db8ff;
+        }
+
+        .alert-icon {
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+
+        .alert-critical .alert-icon {
+            color: #f44336;
+        }
+
+        .alert-warning .alert-icon {
+            color: #ff9800;
+        }
+
+        .alert-info .alert-icon {
+            color: #4db8ff;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .data-table th {
+            background: rgba(77, 184, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #4db8ff;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .data-table tr:hover {
+            background: rgba(77, 184, 255, 0.05);
+        }
+
+        .recommendation-box {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(76, 175, 80, 0.05) 100%);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #4caf50;
+            margin-top: 15px;
+        }
+
+        .recommendation-box h4 {
+            color: #4caf50;
+            margin-bottom: 10px;
+        }
+
+        .risk-gauge {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .risk-bar {
+            height: 20px;
+            flex: 1;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .risk-critical { background: #f44336; }
+        .risk-high { background: #ff9800; }
+        .risk-medium { background: #ffc107; }
+        .risk-low { background: #4caf50; }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+
+        .action-items {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .action-items li {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: rgba(77, 184, 255, 0.1);
+            border-left: 3px solid #4db8ff;
+            border-radius: 4px;
+        }
+
+        .action-items li:before {
+            content: "▸ ";
+            color: #4db8ff;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #b0b0b0;
+            font-size: 0.9em;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .metric-card {
+                padding: 15px;
+            }
+
+            .metric-value {
+                font-size: 1.5em;
+            }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .badge-bullish {
+            background: #4caf50;
+            color: #fff;
+        }
+
+        .badge-bearish {
+            background: #f44336;
+            color: #fff;
+        }
+
+        .badge-neutral {
+            background: #ff9800;
+            color: #fff;
+        }
+
+        .contradiction-table {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .contradiction-table td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .contradiction-table td:first-child {
+            text-align: left;
+            font-weight: 600;
+            width: 30%;
+        }
+
+        .allocation-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+
+        .allocation-bar {
+            width: 150px;
+            height: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 0 10px;
+        }
+
+        .allocation-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4db8ff, #e94560);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📈 Weekly Market Analysis Dashboard</h1>
+            <p class="subtitle">Expert Investment Analysis & Portfolio Recommendations</p>
+            <div class="last-updated">
+                Last Updated: <span id="update-time">Loading...</span>
+            </div>
+        </div>
+
+        <!-- Market Summary Section -->
+        <div class="market-summary">
+            <div class="metric-card">
+                <div class="metric-label">S&P 500</div>
+                <div class="metric-value">7,358</div>
+                <div class="metric-change neutral">▼ -0.10% (Today)</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Nasdaq Composite</div>
+                <div class="metric-value">25,477</div>
+                <div class="metric-change neutral">▼ -0.43% (Today)</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">VIX Volatility Index</div>
+                <div class="metric-value">18.41</div>
+                <div class="metric-change neutral">Moderate Risk</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Federal Funds Rate</div>
+                <div class="metric-value">3.63%</div>
+                <div class="metric-change neutral">Holding Steady</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Inflation (CPI)</div>
+                <div class="metric-value">4.2%</div>
+                <div class="metric-change negative">↑ 3rd Consecutive Increase</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Unemployment</div>
+                <div class="metric-value">4.3%</div>
+                <div class="metric-change neutral">Stable</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Oil (Brent)</div>
+                <div class="metric-value">$73.74</div>
+                <div class="metric-change negative">Volatile Range</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Gold</div>
+                <div class="metric-value">$4,050</div>
+                <div class="metric-change neutral">Safe Haven Bid</div>
+            </div>
+        </div>
+
+        <!-- Risk Assessment -->
+        <div class="section">
+            <h2>⚠️ Risk Assessment</h2>
+
+            <div class="alert alert-critical">
+                <div class="alert-icon">🔴</div>
+                <div>
+                    <strong>Critical Risk: Supply-Driven Inflation</strong><br>
+                    CPI accelerating to 4.2% (3rd consecutive month) driven by Iran war energy shocks. Core inflation up to 2.9%. This is structural, not cyclical—supply recovery expected 2-3 years minimum.
+                </div>
+            </div>
+
+            <div class="alert alert-critical">
+                <div class="alert-icon">🔴</div>
+                <div>
+                    <strong>Critical Risk: Geopolitical Fragmentation</strong><br>
+                    Strait of Hormuz disruption, critical infrastructure damage, tariff escalation permanent. New supply chains more expensive and less efficient. Trade policy uncertainty remains elevated.
+                </div>
+            </div>
+
+            <div class="alert alert-warning">
+                <div class="alert-icon">🟡</div>
+                <div>
+                    <strong>Warning: Market Breadth Deterioration</strong><br>
+                    Only 64.7% of constituents above 50-day MA (barely above neutral). RSI at 45.1 shows lack of conviction. Vulnerable to catalyst-driven corrections.
+                </div>
+            </div>
+
+            <div class="alert alert-warning">
+                <div class="alert-icon">🟡</div>
+                <div>
+                    <strong>Warning: Earnings Quality Concerns</strong><br>
+                    22% growth heavily concentrated in 2 stocks (NVIDIA, Micron). Core earnings growth only 12-13%. Margins likely peaking as input costs explode.
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                <div class="alert-icon">ℹ️</div>
+                <div>
+                    <strong>Monitor: Super El Niño Risk</strong><br>
+                    Developing "historically significant" Super El Niño by end of 2026. Agricultural supply shocks could spike food prices 20-50%+. Precedent: Cacao +300% in late 2024.
+                </div>
+            </div>
+
+            <h3>Risk Gauge:</h3>
+            <div class="risk-gauge">
+                <div class="risk-bar risk-critical" style="flex: 2;" title="Critical"></div>
+                <div class="risk-bar risk-high" style="flex: 2;" title="High"></div>
+                <div class="risk-bar risk-medium" style="flex: 1;" title="Medium"></div>
+                <div class="risk-bar risk-low" style="flex: 0.5;" title="Low"></div>
+            </div>
+            <p style="margin-top: 10px; font-size: 0.9em;">Overall Risk Level: <strong style="color: #f44336;">HIGH</strong> (8/10)</p>
+        </div>
+
+        <!-- Federal Reserve Analysis -->
+        <div class="section">
+            <h2>🏦 Federal Reserve & Monetary Policy</h2>
+
+            <h3>Current Stance</h3>
+            <table class="data-table">
+                <tr>
+                    <td><strong>Funds Rate</strong></td>
+                    <td>3.5% - 3.75% (Unchanged 4 consecutive meetings)</td>
+                </tr>
+                <tr>
+                    <td><strong>PCE Projection (Year-End)</strong></td>
+                    <td>3.6% (revised UP from 2.7% in March)</td>
+                </tr>
+                <tr>
+                    <td><strong>Rate Hike Probability</strong></td>
+                    <td>9 of 18 voting members project hikes before year-end; 6 project TWO 25bp hikes</td>
+                </tr>
+                <tr>
+                    <td><strong>Sentiment</strong></td>
+                    <td>Hawkish pivot underway. New Fed Chair Warsh signals tighter stance.</td>
+                </tr>
+            </table>
+
+            <div class="alert alert-critical" style="margin-top: 20px;">
+                <div class="alert-icon">⚠️</div>
+                <div>
+                    <strong>Critical Contradiction:</strong> Fed claims "solid economic activity" while revising inflation expectations up 90bp in 3 months. Markets priced in "hold" scenario; rate hike announcements will shock to downside.
+                </div>
+            </div>
+
+            <div class="recommendation-box">
+                <h4>📌 Portfolio Impact</h4>
+                <ul class="action-items">
+                    <li>Each 25bp rate hike = 15-20% downside pressure on growth/tech valuations</li>
+                    <li>Adjust portfolio for expected Q3-Q4 tightening</li>
+                    <li>Increase duration in bonds (they'll re-rate higher on hike announcements)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Market Technicals -->
+        <div class="section">
+            <h2>📊 Market Technicals</h2>
+
+            <h3>Current Levels (Late June 2026)</h3>
+            <table class="data-table">
+                <tr>
+                    <td><strong>S&P 500</strong></td>
+                    <td>7,358.22</td>
+                    <td style="text-align: right;">2026 Range: 6,343 - 7,609</td>
+                </tr>
+                <tr>
+                    <td><strong>Nasdaq Composite</strong></td>
+                    <td>25,476.64</td>
+                    <td style="text-align: right;">Weakness in semiconductors</td>
+                </tr>
+                <tr>
+                    <td><strong>VIX Range (June)</strong></td>
+                    <td>15.18 - 23.34</td>
+                    <td style="text-align: right;">Elevated tail risks</td>
+                </tr>
+                <tr>
+                    <td><strong>Market Breadth</strong></td>
+                    <td>64.7% above 50-day MA</td>
+                    <td style="text-align: right;">Barely above neutral 50%</td>
+                </tr>
+                <tr>
+                    <td><strong>RSI (Momentum)</strong></td>
+                    <td>45.1</td>
+                    <td style="text-align: right;">Neutral (no conviction)</td>
+                </tr>
+            </table>
+
+            <h3>Technical Assessment</h3>
+            <div class="alert alert-warning">
+                <div class="alert-icon">⚠️</div>
+                <div>
+                    Market in consolidation, vulnerable to catalyst-driven moves. Weak breadth despite index near highs suggests institutional support masking deteriorating fundamentals. Early June 4%+ Nasdaq correction was "fear trade" on inflation; retest likely if more hikes announced.
+                </div>
+            </div>
+
+            <h3>Key Support & Resistance</h3>
+            <ul class="action-items">
+                <li><strong>Support:</strong> 7,100-7,200 (psychological level), then 6,343 (March lows)</li>
+                <li><strong>Resistance:</strong> 7,600 (early June high)</li>
+                <li><strong>Trigger:</strong> Breach of 7,100 = likely cascade to 6,800-7,000 on stop losses</li>
+            </ul>
+        </div>
+
+        <!-- Economic Data -->
+        <div class="section">
+            <h2>📉 Economic Indicators</h2>
+
+            <h3>Key Data Points (May/June 2026)</h3>
+            <table class="data-table">
+                <tr>
+                    <th>Indicator</th>
+                    <th>Current</th>
+                    <th>Trend</th>
+                    <th>Assessment</th>
+                </tr>
+                <tr>
+                    <td><strong>Unemployment Rate</strong></td>
+                    <td>4.3%</td>
+                    <td class="neutral">Stable</td>
+                    <td>Labor market cooling gradually</td>
+                </tr>
+                <tr>
+                    <td><strong>Headline CPI</strong></td>
+                    <td>4.2%</td>
+                    <td class="negative">↑ 3rd month</td>
+                    <td>Accelerating, driven by energy</td>
+                </tr>
+                <tr>
+                    <td><strong>Core CPI</strong></td>
+                    <td>2.9%</td>
+                    <td class="negative">↑ New High</td>
+                    <td>Broadening beyond energy</td>
+                </tr>
+                <tr>
+                    <td><strong>Energy Inflation</strong></td>
+                    <td>+23.5% YoY</td>
+                    <td class="negative">Structural</td>
+                    <td>Gasoline +40.5%; Iran war impact</td>
+                </tr>
+                <tr>
+                    <td><strong>GDP Growth</strong></td>
+                    <td>Solid Pace</td>
+                    <td class="positive">Intact</td>
+                    <td>Strong productivity & investment</td>
+                </tr>
+                <tr>
+                    <td><strong>Consumer Sentiment</strong></td>
+                    <td>Record Low</td>
+                    <td class="negative">↓ Crisis</td>
+                    <td>War/inflation impact on cost of living</td>
+                </tr>
+            </table>
+
+            <div class="recommendation-box">
+                <h4>📌 Key Insight</h4>
+                <p>Traditional economic strength masks emerging cracks. Consumer sentiment at record lows suggests demand destruction imminent. Combined with margin compression from inflation, Q2/Q3 earnings may disappoint.</p>
+            </div>
+        </div>
+
+        <!-- Geopolitical Risks -->
+        <div class="section">
+            <h2>🌍 Geopolitical Risks</h2>
+
+            <h3>Critical Developments</h3>
+            <div class="alert alert-critical">
+                <div class="alert-icon">🔴</div>
+                <div>
+                    <strong>Iran War & Middle East Conflict</strong><br>
+                    Strait of Hormuz restricted; critical infrastructure damaged; supply recovery 2-3 years minimum. Brent crude forecast above $100/bbl into 2028.
+                </div>
+            </div>
+
+            <div class="alert alert-critical">
+                <div class="alert-icon">🔴</div>
+                <div>
+                    <strong>Trade War Escalation</strong><br>
+                    Supreme Court invalidated 2025 tariffs; new tariffs under alternative authorities. US-China tensions remain primary driver. Tariffs now "durable feature" not temporary.
+                </div>
+            </div>
+
+            <div class="alert alert-warning">
+                <div class="alert-icon">🟡</div>
+                <div>
+                    <strong>Supply Chain Restructuring</strong><br>
+                    "Friend-shoring" prioritizes geopolitical alignment over efficiency. New supply chains MORE EXPENSIVE and LESS EFFICIENT. Cost inflation embedded for 2-3 years.
+                </div>
+            </div>
+
+            <h3>Tail Risks to Monitor</h3>
+            <ul class="action-items">
+                <li><strong>Taiwan Conflict:</strong> Would cripple 40% of global semiconductor supply (catastrophic for tech valuations)</li>
+                <li><strong>Iran Escalation:</strong> Could push oil to $150-$200/bbl (stagflation scenario)</li>
+                <li><strong>US-China Tariff War:</strong> Immediate margin hits for multinationals; recession catalyst</li>
+            </ul>
+        </div>
+
+        <!-- Commodities -->
+        <div class="section">
+            <h2>⛽ Commodities & Weather Impacts</h2>
+
+            <h3>Energy & Precious Metals</h3>
+            <table class="data-table">
+                <tr>
+                    <td><strong>Oil (Brent)</strong></td>
+                    <td>$73.74 (Late June)</td>
+                    <td>↑ Forecast: >$100/bbl into 2028</td>
+                </tr>
+                <tr>
+                    <td><strong>Oil Range (June)</strong></td>
+                    <td>$70 - $110+</td>
+                    <td>⚠️ 40% volatility = tail risks</td>
+                </tr>
+                <tr>
+                    <td><strong>Gold</strong></td>
+                    <td>$4,050</td>
+                    <td>2026 High: $5,589 (Jan 28)</td>
+                </tr>
+                <tr>
+                    <td><strong>Gold Forecast</strong></td>
+                    <td>$5,000+ (if geopolitical escalation)</td>
+                    <td>📈 Inflation + Uncertainty Hedge</td>
+                </tr>
+            </table>
+
+            <h3>Agricultural & Weather Risks</h3>
+            <div class="alert alert-critical" style="margin-top: 20px;">
+                <div class="alert-icon">🔴</div>
+                <div>
+                    <strong>Super El Niño Developing</strong><br>
+                    Becoming "historically significant" by end of 2026. Southeast Asia facing severe drought risks (India, Indonesia). Precedent: Cacao prices rose 300% in late 2024 due to weather + demand.
+                </div>
+            </div>
+
+            <div class="recommendation-box">
+                <h4>⚠️ Agricultural Supply Chain Risk</h4>
+                <ul class="action-items">
+                    <li>1% increase in drought reduces agricultural exports 0.5-0.7%</li>
+                    <li>Cascades to food manufacturing production (-0.04% average)</li>
+                    <li>Affects downstream: pharmaceuticals, skincare, biofuels, plastics</li>
+                    <li>Food price inflation could spike 20-50%+ in crisis scenario</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Earnings & Sentiment -->
+        <div class="section">
+            <h2>💹 Earnings & Market Sentiment</h2>
+
+            <h3>Earnings Growth Breakdown</h3>
+            <table class="data-table">
+                <tr>
+                    <td><strong>12-Month Earnings Growth</strong></td>
+                    <td>22% (Expected)</td>
+                </tr>
+                <tr>
+                    <td><strong>Q1 2026 Actual</strong></td>
+                    <td>+28.6% (Double expectations; highest since Q4 2021)</td>
+                </tr>
+                <tr>
+                    <td><strong>Blended Profit Margin</strong></td>
+                    <td>14.8% (Record high)</td>
+                </tr>
+                <tr>
+                    <td><strong>Tech Sector Growth</strong></td>
+                    <td>+54.3%</td>
+                </tr>
+                <tr>
+                    <td><strong>Tech ex-NVIDIA/Micron</strong></td>
+                    <td>+30.1% (24.2% gap!)</td>
+                </tr>
+            </table>
+
+            <div class="alert alert-critical" style="margin-top: 20px;">
+                <div class="alert-icon">🔴</div>
+                <div>
+                    <strong>Concentration Risk & Margin Peak</strong><br>
+                    Two stocks (NVIDIA, Micron) driving 24% of sector growth. Record profit margins happening EXACTLY as input costs explode. Expect significant margin compression Q2-Q3.
+                </div>
+            </div>
+
+            <h3>Sentiment Indicators</h3>
+            <ul class="action-items">
+                <li><strong>Consumer Sentiment:</strong> Record lows (driven by war/inflation concerns)</li>
+                <li><strong>Market Breadth:</strong> 64.7% above 50-day MA (weak participation)</li>
+                <li><strong>Retail Capitulation:</strong> Likely complete; institutional support masking deterioration</li>
+                <li><strong>Typical Resolution:</strong> Sharp correction when institutions realize few natural buyers remain</li>
+            </ul>
+        </div>
+
+        <!-- Portfolio Recommendations -->
+        <div class="section">
+            <h2>💼 Portfolio Positioning & Recommendations</h2>
+
+            <h3>Strategic Asset Allocation <span class="badge badge-bearish">DEFENSIVE TILT</span></h3>
+
+            <div style="margin: 20px 0;">
+                <div class="allocation-item">
+                    <span><strong>Equities</strong> (Down from 70-75%)</span>
+                    <div class="allocation-bar">
+                        <div class="allocation-fill" style="width: 60%;">60%</div>
+                    </div>
+                    <span>Target: <strong>60%</strong></span>
+                </div>
+
+                <div class="allocation-item">
+                    <span><strong>Fixed Income & Bonds</strong> (Up from 20%)</span>
+                    <div class="allocation-bar">
+                        <div class="allocation-fill" style="width: 25%;">25%</div>
+                    </div>
+                    <span>Target: <strong>25%</strong></span>
+                </div>
+
+                <div class="allocation-item">
+                    <span><strong>Commodities & Hedges</strong> (New allocation)</span>
+                    <div class="allocation-bar">
+                        <div class="allocation-fill" style="width: 15%;">15%</div>
+                    </div>
+                    <span>Target: <strong>15%</strong></span>
+                </div>
+            </div>
+
+            <h3>Equity Allocation (60% of Portfolio)</h3>
+            <table class="data-table">
+                <tr>
+                    <th>Sector</th>
+                    <th>% of Equity</th>
+                    <th>Rationale</th>
+                </tr>
+                <tr>
+                    <td><strong>Utilities</strong></td>
+                    <td>15%</td>
+                    <td>Stable earnings, 3-4% dividend yield, defensive</td>
+                </tr>
+                <tr>
+                    <td><strong>Healthcare</strong></td>
+                    <td>15%</td>
+                    <td>Defensive, pricing power against inflation</td>
+                </tr>
+                <tr>
+                    <td><strong>Consumer Staples</strong></td>
+                    <td>12%</td>
+                    <td>Price leadership, less volume-sensitive</td>
+                </tr>
+                <tr>
+                    <td><strong>Financials</strong></td>
+                    <td>10%</td>
+                    <td>Benefit from higher rates; deposit margins improve</td>
+                </tr>
+                <tr>
+                    <td><strong>Industrials</strong></td>
+                    <td>8%</td>
+                    <td>Limited exposure to infrastructure/construction</td>
+                </tr>
+                <tr>
+                    <td><strong>AVOID: Tech Overweight</strong></td>
+                    <td style="color: #f44336;"><strong>0%</strong></td>
+                    <td style="color: #f44336;">Multiple compression risk; reduce exposure</td>
+                </tr>
+            </table>
+
+            <h3>Fixed Income (25% of Portfolio)</h3>
+            <ul class="action-items">
+                <li><strong>US Treasury Bonds (10%):</strong> 10-year at 4.3% attractive vs. recession risks</li>
+                <li><strong>Investment-Grade Corporates (8%):</strong> 5-6% yields; focus on utility/energy infrastructure</li>
+                <li><strong>TIPS (7%):</strong> Protect against 4%+ inflation; 1.5-2% real yield</li>
+            </ul>
+
+            <h3>Commodities & Hedges (15% of Portfolio)</h3>
+            <ul class="action-items">
+                <li><strong>Gold (7%):</strong> Inflation & geopolitical hedge. Buy dips to $3,800. Target: $5,000+</li>
+                <li><strong>Oil Futures/Energy ETFs (5%):</strong> Tactical, not core. Buy $65-70, sell rallies to $85-90</li>
+                <li><strong>Agricultural/EM (3%):</strong> Hedge against Super El Niño impacts</li>
+            </ul>
+
+            <div class="recommendation-box">
+                <h4>🎯 Tactical Actions (Immediate)</h4>
+                <ol class="action-items" style="list-style: decimal; padding-left: 20px;">
+                    <li>REDUCE equity exposure from 70% to 60% (take profits on Tech/Growth)</li>
+                    <li>ROTATE into defensive sectors (Utilities, Healthcare, Staples)</li>
+                    <li>ADD fixed income (Treasuries + TIPS for 4% yields with less risk)</li>
+                    <li>BUILD hedge with gold (5-7% allocation for insurance)</li>
+                    <li>AVOID concentrated tech bets; reduce NVIDIA exposure</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Risk Management -->
+        <div class="section">
+            <h2>🛡️ Risk Management & Rebalancing Triggers</h2>
+
+            <h3>Action Thresholds - Rebalance When:</h3>
+            <table class="data-table">
+                <tr>
+                    <th>Trigger</th>
+                    <th>Action</th>
+                    <th>Rationale</th>
+                </tr>
+                <tr>
+                    <td><strong>Oil > $85/bbl</strong></td>
+                    <td>Increase energy allocation 5-10%</td>
+                    <td>Supply shock intensifying</td>
+                </tr>
+                <tr>
+                    <td><strong>VIX > 25</strong></td>
+                    <td>Reduce equities 10-15%, add bonds</td>
+                    <td>Fear premium rising; reversal opportunity</td>
+                </tr>
+                <tr>
+                    <td><strong>S&P 500 < 7,100</strong></td>
+                    <td>Buy dips, rebalance to strategic allocation</td>
+                    <td>Support broken; psychological level</td>
+                </tr>
+                <tr>
+                    <td><strong>Fed Rate Hike Announced</strong></td>
+                    <td>Reduce duration in bonds, favor floating-rate</td>
+                    <td>Multiple compression expected</td>
+                </tr>
+                <tr>
+                    <td><strong>Consumer Sentiment < Previous Low</strong></td>
+                    <td>Increase defensives, consider hedge options</td>
+                    <td>Recession risk rising</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Scenarios & Outlook -->
+        <div class="section">
+            <h2>🔮 6-Month Outlook (Through December 2026)</h2>
+
+            <h3>Base Case Scenario (60% Probability) <span class="badge badge-neutral">NEUTRAL</span></h3>
+            <table class="data-table">
+                <tr>
+                    <td><strong>S&P 500 Target</strong></td>
+                    <td>7,200-7,400 (Flat to modest gains)</td>
+                </tr>
+                <tr>
+                    <td><strong>Fed Action</strong></td>
+                    <td>One 25bp rate hike in Q3; pause signals for H2</td>
+                </tr>
+                <tr>
+                    <td><strong>Inflation</strong></td>
+                    <td>Stabilizes ~3.5% as energy moderates Q3-Q4</td>
+                </tr>
+                <tr>
+                    <td><strong>Earnings Growth</strong></td>
+                    <td>12-15% (Below expectations, margin compression)</td>
+                </tr>
+                <tr>
+                    <td><strong>Winner</strong></td>
+                    <td>Defensive sectors, dividend stocks, bonds</td>
+                </tr>
+            </table>
+
+            <h3>Stagflation Scenario (25% Probability) <span class="badge badge-bearish">BEARISH</span></h3>
+            <table class="data-table">
+                <tr>
+                    <td><strong>Trigger</strong></td>
+                    <td>Iran escalation, oil spike to $120+, Super El Niño crop failures</td>
+                </tr>
+                <tr>
+                    <td><strong>S&P 500 Target</strong></td>
+                    <td>5,800-6,200 (20-25% Correction)</td>
+                </tr>
+                <tr>
+                    <td><strong>Inflation</strong></td>
+                    <td>Remains 4%+ through 2027</td>
+                </tr>
+                <tr>
+                    <td><strong>Fed Response</strong></td>
+                    <td>2-3 rate hikes; market panic; recession fears</td>
+                </tr>
+                <tr>
+                    <td><strong>Winners</strong></td>
+                    <td>Gold ($5,500), energy stocks, TIPS, defensive dividends</td>
+                </tr>
+                <tr>
+                    <td><strong>Losers</strong></td>
+                    <td>Growth tech, unprofitable names, consumer discretionary</td>
+                </tr>
+            </table>
+
+            <h3>Bull Case Scenario (15% Probability) <span class="badge badge-bullish">BULLISH</span></h3>
+            <table class="data-table">
+                <tr>
+                    <td><strong>Trigger</strong></td>
+                    <td>Iran conflict de-escalates, Middle East stabilizes, oil falls to $55-60</td>
+                </tr>
+                <tr>
+                    <td><strong>S&P 500 Target</strong></td>
+                    <td>8,000-8,500 (Rally)</td>
+                </tr>
+                <tr>
+                    <td><strong>Inflation</strong></td>
+                    <td>Falls to 2.8-3.2% sustainably</td>
+                </tr>
+                <tr>
+                    <td><strong>Fed Action</strong></td>
+                    <td>Cuts rates 2x in late 2026</td>
+                </tr>
+                <tr>
+                    <td><strong>Winners</strong></td>
+                    <td>Growth tech re-rates higher; multiple expansion</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Final Recommendation -->
+        <div class="section" style="background: linear-gradient(135deg, rgba(244, 67, 54, 0.1) 0%, rgba(255, 152, 0, 0.1) 100%); border-top-color: #ff6f00;">
+            <h2>⚡ FINAL RECOMMENDATION</h2>
+
+            <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; border-left: 4px solid #ff6f00;">
+                <h3 style="color: #ff9800; margin-bottom: 15px;">Market Stance: CAUTIOUS NEUTRAL with DEFENSIVE TILT</h3>
+
+                <p style="margin-bottom: 15px;">
+                    <strong>The equity market is NOT pricing in structural risks correctly.</strong> Supply-driven inflation, geopolitical fragmentation, and deteriorating sentiment create asymmetric downside risk. This is an environment to <strong>preserve capital and collect dividends</strong>, not chase growth.
+                </p>
+
+                <h4 style="color: #4db8ff; margin-top: 20px; margin-bottom: 10px;">Priority Actions:</h4>
+                <ol class="action-items" style="list-style: decimal; padding-left: 20px;">
+                    <li><strong>Reduce equity exposure 70% → 60%</strong> (take profits on Tech/Growth)</li>
+                    <li><strong>Rotate to defensive sectors</strong> (Utilities 15%, Healthcare 15%, Staples 12%)</li>
+                    <li><strong>Add fixed income</strong> (Treasuries + TIPS = 25% allocation at 4% yields)</li>
+                    <li><strong>Build hedges</strong> (Gold 7%, Oil/Energy 5%, Agricultural 3%)</li>
+                    <li><strong>Avoid concentrated tech bets</strong> (reduce NVIDIA exposure 30-40%)</li>
+                </ol>
+
+                <h4 style="color: #4db8ff; margin-top: 20px; margin-bottom: 10px;">Expected Returns (6-Month):</h4>
+                <ul class="action-items">
+                    <li><strong>Base Case:</strong> 2-5% return (mostly dividends, minimal capital appreciation)</li>
+                    <li><strong>Tail Risk:</strong> -15% to -25% drawdown (accepted for better risk/reward)</li>
+                    <li><strong>Sharpe Ratio:</strong> Better in defensive positioning despite lower returns</li>
+                </ul>
+
+                <p style="margin-top: 20px; padding: 15px; background: rgba(76, 175, 80, 0.1); border-radius: 4px; border-left: 3px solid #4caf50;">
+                    <strong>🎯 This is an environment to preserve capital and collect dividends, not chase growth.</strong> Risk/reward for being fully invested in equities here is poor. Position defensively, build dry powder, and wait for capitulation opportunities.
+                </p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>📊 Weekly Market Analysis Dashboard | Updated: <span id="footer-date">Loading...</span></p>
+            <p>Disclaimer: This analysis is for educational purposes. Not financial advice. Consult with a financial advisor before making investment decisions.</p>
+            <p>Data Sources: Federal Reserve, CFTC, BLS, CME Group, Bloomberg, CNBC, Reuters</p>
+        </div>
+    </div>
+
+    <script>
+        // Update timestamps
+        function updateTimestamps() {
+            const now = new Date();
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                timeZoneName: 'short'
+            };
+
+            document.getElementById('update-time').textContent = now.toLocaleDateString('en-US', options);
+            document.getElementById('footer-date').textContent = now.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', updateTimestamps);
+
+        // Update every minute
+        setInterval(updateTimestamps, 60000);
+    </script>
+</body>
+</html>
