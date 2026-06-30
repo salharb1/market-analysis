@@ -26,6 +26,7 @@
         }
 
         .header {
+            position: relative;
             background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
             padding: 40px;
             border-radius: 12px;
@@ -50,6 +51,26 @@
             color: #4db8ff;
             font-size: 0.9em;
             margin-top: 15px;
+        }
+
+        .lang-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #e94560;
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            font-family: inherit;
+            transition: background 0.3s ease;
+        }
+
+        .lang-switch:hover {
+            background: #ff5d77;
         }
 
         .market-summary {
@@ -350,76 +371,135 @@
             font-size: 0.75em;
             font-weight: bold;
         }
+
+        /* ===== RTL (Arabic) overrides ===== */
+        [dir="rtl"] body {
+            text-align: right;
+        }
+
+        [dir="rtl"] .lang-switch {
+            right: auto;
+            left: 20px;
+        }
+
+        [dir="rtl"] .header {
+            border-left: none;
+            border-right: 5px solid #e94560;
+        }
+
+        [dir="rtl"] .metric-card {
+            border-left: none;
+            border-right: 4px solid #e94560;
+        }
+
+        [dir="rtl"] .alert {
+            border-left: none;
+            border-right: 4px solid;
+        }
+
+        [dir="rtl"] .recommendation-box {
+            border-left: none;
+            border-right: 4px solid #4caf50;
+        }
+
+        [dir="rtl"] .data-table th {
+            text-align: right;
+        }
+
+        [dir="rtl"] .action-items li {
+            border-left: none;
+            border-right: 3px solid #4db8ff;
+        }
+
+        [dir="rtl"] .action-items li:before {
+            margin-right: 0;
+            margin-left: 8px;
+        }
+
+        [dir="rtl"] ol.action-items {
+            padding-left: 0 !important;
+            padding-right: 20px !important;
+        }
+
+        [dir="rtl"] .badge {
+            margin-left: 0;
+            margin-right: 10px;
+        }
+
+        [dir="rtl"] .contradiction-table td:first-child {
+            text-align: right;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>📈 Weekly Market Analysis Dashboard</h1>
-            <p class="subtitle">Expert Investment Analysis & Portfolio Recommendations</p>
+            <button id="lang-toggle" class="lang-switch" onclick="toggleLanguage()">العربية</button>
+            <h1 data-i18n="header_title">📈 Weekly Market Analysis Dashboard</h1>
+            <p class="subtitle" data-i18n="header_subtitle">Expert Investment Analysis & Portfolio Recommendations</p>
             <div class="last-updated">
-                Last Updated: <span id="update-time">Loading...</span>
+                <span data-i18n="last_updated_label">Last Updated:</span> <span id="update-time">Loading...</span>
             </div>
         </div>
 
         <!-- Market Summary Section -->
         <div class="market-summary">
             <div class="metric-card">
-                <div class="metric-label">S&P 500</div>
+                <div class="metric-label" data-i18n="m_sp500_label">S&P 500</div>
                 <div class="metric-value">7,358</div>
-                <div class="metric-change neutral">▼ -0.10% (Today)</div>
+                <div class="metric-change neutral" data-i18n="m_sp500_change">▼ -0.10% (Today)</div>
             </div>
 
             <div class="metric-card">
-                <div class="metric-label">Nasdaq Composite</div>
+                <div class="metric-label" data-i18n="m_nasdaq_label">Nasdaq Composite</div>
                 <div class="metric-value">25,477</div>
-                <div class="metric-change neutral">▼ -0.43% (Today)</div>
+                <div class="metric-change neutral" data-i18n="m_nasdaq_change">▼ -0.43% (Today)</div>
             </div>
 
             <div class="metric-card">
-                <div class="metric-label">VIX Volatility Index</div>
+                <div class="metric-label" data-i18n="m_vix_label">VIX Volatility Index</div>
                 <div class="metric-value">18.41</div>
-                <div class="metric-change neutral">Moderate Risk</div>
+                <div class="metric-change neutral" data-i18n="m_vix_change">Moderate Risk</div>
             </div>
 
             <div class="metric-card">
-                <div class="metric-label">Federal Funds Rate</div>
+                <div class="metric-label" data-i18n="m_ffr_label">Federal Funds Rate</div>
                 <div class="metric-value">3.63%</div>
-                <div class="metric-change neutral">Holding Steady</div>
+                <div class="metric-change neutral" data-i18n="m_ffr_change">Holding Steady</div>
             </div>
 
             <div class="metric-card">
-                <div class="metric-label">Inflation (CPI)</div>
+                <div class="metric-label" data-i18n="m_cpi_label">Inflation (CPI)</div>
                 <div class="metric-value">4.2%</div>
-                <div class="metric-change negative">↑ 3rd Consecutive Increase</div>
+                <div class="metric-change negative" data-i18n="m_cpi_change">↑ 3rd Consecutive Increase</div>
             </div>
 
             <div class="metric-card">
-                <div class="metric-label">Unemployment</div>
+                <div class="metric-label" data-i18n="m_unemp_label">Unemployment</div>
                 <div class="metric-value">4.3%</div>
-                <div class="metric-change neutral">Stable</div>
+                <div class="metric-change neutral" data-i18n="m_unemp_change">Stable</div>
             </div>
 
             <div class="metric-card">
-                <div class="metric-label">Oil (Brent)</div>
+                <div class="metric-label" data-i18n="m_oil_label">Oil (Brent)</div>
                 <div class="metric-value">$73.74</div>
-                <div class="metric-change negative">Volatile Range</div>
+                <div class="metric-change negative" data-i18n="m_oil_change">Volatile Range</div>
             </div>
 
             <div class="metric-card">
-                <div class="metric-label">Gold</div>
+                <div class="metric-label" data-i18n="m_gold_label">Gold</div>
                 <div class="metric-value">$4,050</div>
-                <div class="metric-change neutral">Safe Haven Bid</div>
+                <div class="metric-change neutral" data-i18n="m_gold_change">Safe Haven Bid</div>
             </div>
         </div>
 
         <!-- Risk Assessment -->
         <div class="section">
-            <h2>⚠️ Risk Assessment</h2>
+            <h2 data-i18n="risk_h2">⚠️ Risk Assessment</h2>
 
             <div class="alert alert-critical">
                 <div class="alert-icon">🔴</div>
-                <div>
+                <div data-i18n="risk_1">
                     <strong>Critical Risk: Supply-Driven Inflation</strong><br>
                     CPI accelerating to 4.2% (3rd consecutive month) driven by Iran war energy shocks. Core inflation up to 2.9%. This is structural, not cyclical—supply recovery expected 2-3 years minimum.
                 </div>
@@ -427,7 +507,7 @@
 
             <div class="alert alert-critical">
                 <div class="alert-icon">🔴</div>
-                <div>
+                <div data-i18n="risk_2">
                     <strong>Critical Risk: Geopolitical Fragmentation</strong><br>
                     Strait of Hormuz disruption, critical infrastructure damage, tariff escalation permanent. New supply chains more expensive and less efficient. Trade policy uncertainty remains elevated.
                 </div>
@@ -435,7 +515,7 @@
 
             <div class="alert alert-warning">
                 <div class="alert-icon">🟡</div>
-                <div>
+                <div data-i18n="risk_3">
                     <strong>Warning: Market Breadth Deterioration</strong><br>
                     Only 64.7% of constituents above 50-day MA (barely above neutral). RSI at 45.1 shows lack of conviction. Vulnerable to catalyst-driven corrections.
                 </div>
@@ -443,7 +523,7 @@
 
             <div class="alert alert-warning">
                 <div class="alert-icon">🟡</div>
-                <div>
+                <div data-i18n="risk_4">
                     <strong>Warning: Earnings Quality Concerns</strong><br>
                     22% growth heavily concentrated in 2 stocks (NVIDIA, Micron). Core earnings growth only 12-13%. Margins likely peaking as input costs explode.
                 </div>
@@ -451,41 +531,41 @@
 
             <div class="alert alert-info">
                 <div class="alert-icon">ℹ️</div>
-                <div>
+                <div data-i18n="risk_5">
                     <strong>Monitor: Super El Niño Risk</strong><br>
                     Developing "historically significant" Super El Niño by end of 2026. Agricultural supply shocks could spike food prices 20-50%+. Precedent: Cacao +300% in late 2024.
                 </div>
             </div>
 
-            <h3>Risk Gauge:</h3>
+            <h3 data-i18n="risk_gauge_h3">Risk Gauge:</h3>
             <div class="risk-gauge">
                 <div class="risk-bar risk-critical" style="flex: 2;" title="Critical"></div>
                 <div class="risk-bar risk-high" style="flex: 2;" title="High"></div>
                 <div class="risk-bar risk-medium" style="flex: 1;" title="Medium"></div>
                 <div class="risk-bar risk-low" style="flex: 0.5;" title="Low"></div>
             </div>
-            <p style="margin-top: 10px; font-size: 0.9em;">Overall Risk Level: <strong style="color: #f44336;">HIGH</strong> (8/10)</p>
+            <p style="margin-top: 10px; font-size: 0.9em;" data-i18n="risk_overall">Overall Risk Level: <strong style="color: #f44336;">HIGH</strong> (8/10)</p>
         </div>
 
         <!-- Federal Reserve Analysis -->
         <div class="section">
-            <h2>🏦 Federal Reserve & Monetary Policy</h2>
+            <h2 data-i18n="fed_h2">🏦 Federal Reserve & Monetary Policy</h2>
 
-            <h3>Current Stance</h3>
+            <h3 data-i18n="fed_stance_h3">Current Stance</h3>
             <table class="data-table">
-                <tr>
+                <tr data-i18n="fed_row_1">
                     <td><strong>Funds Rate</strong></td>
                     <td>3.5% - 3.75% (Unchanged 4 consecutive meetings)</td>
                 </tr>
-                <tr>
+                <tr data-i18n="fed_row_2">
                     <td><strong>PCE Projection (Year-End)</strong></td>
                     <td>3.6% (revised UP from 2.7% in March)</td>
                 </tr>
-                <tr>
+                <tr data-i18n="fed_row_3">
                     <td><strong>Rate Hike Probability</strong></td>
                     <td>9 of 18 voting members project hikes before year-end; 6 project TWO 25bp hikes</td>
                 </tr>
-                <tr>
+                <tr data-i18n="fed_row_4">
                     <td><strong>Sentiment</strong></td>
                     <td>Hawkish pivot underway. New Fed Chair Warsh signals tighter stance.</td>
                 </tr>
@@ -493,12 +573,12 @@
 
             <div class="alert alert-critical" style="margin-top: 20px;">
                 <div class="alert-icon">⚠️</div>
-                <div>
+                <div data-i18n="fed_contradiction">
                     <strong>Critical Contradiction:</strong> Fed claims "solid economic activity" while revising inflation expectations up 90bp in 3 months. Markets priced in "hold" scenario; rate hike announcements will shock to downside.
                 </div>
             </div>
 
-            <div class="recommendation-box">
+            <div class="recommendation-box" data-i18n="fed_impact_box">
                 <h4>📌 Portfolio Impact</h4>
                 <ul class="action-items">
                     <li>Each 25bp rate hike = 15-20% downside pressure on growth/tech valuations</li>
@@ -510,96 +590,96 @@
 
         <!-- Market Technicals -->
         <div class="section">
-            <h2>📊 Market Technicals</h2>
+            <h2 data-i18n="tech_h2">📊 Market Technicals</h2>
 
-            <h3>Current Levels (Late June 2026)</h3>
+            <h3 data-i18n="tech_levels_h3">Current Levels (Late June 2026)</h3>
             <table class="data-table">
-                <tr>
+                <tr data-i18n="tech_row_1">
                     <td><strong>S&P 500</strong></td>
                     <td>7,358.22</td>
                     <td style="text-align: right;">2026 Range: 6,343 - 7,609</td>
                 </tr>
-                <tr>
+                <tr data-i18n="tech_row_2">
                     <td><strong>Nasdaq Composite</strong></td>
                     <td>25,476.64</td>
                     <td style="text-align: right;">Weakness in semiconductors</td>
                 </tr>
-                <tr>
+                <tr data-i18n="tech_row_3">
                     <td><strong>VIX Range (June)</strong></td>
                     <td>15.18 - 23.34</td>
                     <td style="text-align: right;">Elevated tail risks</td>
                 </tr>
-                <tr>
+                <tr data-i18n="tech_row_4">
                     <td><strong>Market Breadth</strong></td>
                     <td>64.7% above 50-day MA</td>
                     <td style="text-align: right;">Barely above neutral 50%</td>
                 </tr>
-                <tr>
+                <tr data-i18n="tech_row_5">
                     <td><strong>RSI (Momentum)</strong></td>
                     <td>45.1</td>
                     <td style="text-align: right;">Neutral (no conviction)</td>
                 </tr>
             </table>
 
-            <h3>Technical Assessment</h3>
+            <h3 data-i18n="tech_assessment_h3">Technical Assessment</h3>
             <div class="alert alert-warning">
                 <div class="alert-icon">⚠️</div>
-                <div>
+                <div data-i18n="tech_assessment_text">
                     Market in consolidation, vulnerable to catalyst-driven moves. Weak breadth despite index near highs suggests institutional support masking deteriorating fundamentals. Early June 4%+ Nasdaq correction was "fear trade" on inflation; retest likely if more hikes announced.
                 </div>
             </div>
 
-            <h3>Key Support & Resistance</h3>
+            <h3 data-i18n="tech_sr_h3">Key Support & Resistance</h3>
             <ul class="action-items">
-                <li><strong>Support:</strong> 7,100-7,200 (psychological level), then 6,343 (March lows)</li>
-                <li><strong>Resistance:</strong> 7,600 (early June high)</li>
-                <li><strong>Trigger:</strong> Breach of 7,100 = likely cascade to 6,800-7,000 on stop losses</li>
+                <li data-i18n="tech_sr_1"><strong>Support:</strong> 7,100-7,200 (psychological level), then 6,343 (March lows)</li>
+                <li data-i18n="tech_sr_2"><strong>Resistance:</strong> 7,600 (early June high)</li>
+                <li data-i18n="tech_sr_3"><strong>Trigger:</strong> Breach of 7,100 = likely cascade to 6,800-7,000 on stop losses</li>
             </ul>
         </div>
 
         <!-- Economic Data -->
         <div class="section">
-            <h2>📉 Economic Indicators</h2>
+            <h2 data-i18n="econ_h2">📉 Economic Indicators</h2>
 
-            <h3>Key Data Points (May/June 2026)</h3>
+            <h3 data-i18n="econ_data_h3">Key Data Points (May/June 2026)</h3>
             <table class="data-table">
-                <tr>
+                <tr data-i18n="econ_header_row">
                     <th>Indicator</th>
                     <th>Current</th>
                     <th>Trend</th>
                     <th>Assessment</th>
                 </tr>
-                <tr>
+                <tr data-i18n="econ_row_1">
                     <td><strong>Unemployment Rate</strong></td>
                     <td>4.3%</td>
                     <td class="neutral">Stable</td>
                     <td>Labor market cooling gradually</td>
                 </tr>
-                <tr>
+                <tr data-i18n="econ_row_2">
                     <td><strong>Headline CPI</strong></td>
                     <td>4.2%</td>
                     <td class="negative">↑ 3rd month</td>
                     <td>Accelerating, driven by energy</td>
                 </tr>
-                <tr>
+                <tr data-i18n="econ_row_3">
                     <td><strong>Core CPI</strong></td>
                     <td>2.9%</td>
                     <td class="negative">↑ New High</td>
                     <td>Broadening beyond energy</td>
                 </tr>
-                <tr>
+                <tr data-i18n="econ_row_4">
                     <td><strong>Energy Inflation</strong></td>
                     <td>+23.5% YoY</td>
                     <td class="negative">Structural</td>
                     <td>Gasoline +40.5%; Iran war impact</td>
                 </tr>
-                <tr>
+                <tr data-i18n="econ_row_5">
                     <td><strong>GDP Growth</strong></td>
                     <td>Solid Pace</td>
                     <td class="positive">Intact</td>
                     <td>Strong productivity & investment</td>
                 </tr>
-                <tr>
+                <tr data-i18n="econ_row_6">
                     <td><strong>Consumer Sentiment</strong></td>
                     <td>Record Low</td>
                     <td class="negative">↓ Crisis</td>
@@ -607,7 +687,7 @@
                 </tr>
             </table>
 
-            <div class="recommendation-box">
+            <div class="recommendation-box" data-i18n="econ_insight_box">
                 <h4>📌 Key Insight</h4>
                 <p>Traditional economic strength masks emerging cracks. Consumer sentiment at record lows suggests demand destruction imminent. Combined with margin compression from inflation, Q2/Q3 earnings may disappoint.</p>
             </div>
@@ -615,12 +695,12 @@
 
         <!-- Geopolitical Risks -->
         <div class="section">
-            <h2>🌍 Geopolitical Risks</h2>
+            <h2 data-i18n="geo_h2">🌍 Geopolitical Risks</h2>
 
-            <h3>Critical Developments</h3>
+            <h3 data-i18n="geo_dev_h3">Critical Developments</h3>
             <div class="alert alert-critical">
                 <div class="alert-icon">🔴</div>
-                <div>
+                <div data-i18n="geo_1">
                     <strong>Iran War & Middle East Conflict</strong><br>
                     Strait of Hormuz restricted; critical infrastructure damaged; supply recovery 2-3 years minimum. Brent crude forecast above $100/bbl into 2028.
                 </div>
@@ -628,7 +708,7 @@
 
             <div class="alert alert-critical">
                 <div class="alert-icon">🔴</div>
-                <div>
+                <div data-i18n="geo_2">
                     <strong>Trade War Escalation</strong><br>
                     Supreme Court invalidated 2025 tariffs; new tariffs under alternative authorities. US-China tensions remain primary driver. Tariffs now "durable feature" not temporary.
                 </div>
@@ -636,58 +716,58 @@
 
             <div class="alert alert-warning">
                 <div class="alert-icon">🟡</div>
-                <div>
+                <div data-i18n="geo_3">
                     <strong>Supply Chain Restructuring</strong><br>
                     "Friend-shoring" prioritizes geopolitical alignment over efficiency. New supply chains MORE EXPENSIVE and LESS EFFICIENT. Cost inflation embedded for 2-3 years.
                 </div>
             </div>
 
-            <h3>Tail Risks to Monitor</h3>
+            <h3 data-i18n="geo_tail_h3">Tail Risks to Monitor</h3>
             <ul class="action-items">
-                <li><strong>Taiwan Conflict:</strong> Would cripple 40% of global semiconductor supply (catastrophic for tech valuations)</li>
-                <li><strong>Iran Escalation:</strong> Could push oil to $150-$200/bbl (stagflation scenario)</li>
-                <li><strong>US-China Tariff War:</strong> Immediate margin hits for multinationals; recession catalyst</li>
+                <li data-i18n="geo_tail_1"><strong>Taiwan Conflict:</strong> Would cripple 40% of global semiconductor supply (catastrophic for tech valuations)</li>
+                <li data-i18n="geo_tail_2"><strong>Iran Escalation:</strong> Could push oil to $150-$200/bbl (stagflation scenario)</li>
+                <li data-i18n="geo_tail_3"><strong>US-China Tariff War:</strong> Immediate margin hits for multinationals; recession catalyst</li>
             </ul>
         </div>
 
         <!-- Commodities -->
         <div class="section">
-            <h2>⛽ Commodities & Weather Impacts</h2>
+            <h2 data-i18n="comm_h2">⛽ Commodities & Weather Impacts</h2>
 
-            <h3>Energy & Precious Metals</h3>
+            <h3 data-i18n="comm_energy_h3">Energy & Precious Metals</h3>
             <table class="data-table">
-                <tr>
+                <tr data-i18n="comm_row_1">
                     <td><strong>Oil (Brent)</strong></td>
                     <td>$73.74 (Late June)</td>
                     <td>↑ Forecast: >$100/bbl into 2028</td>
                 </tr>
-                <tr>
+                <tr data-i18n="comm_row_2">
                     <td><strong>Oil Range (June)</strong></td>
                     <td>$70 - $110+</td>
                     <td>⚠️ 40% volatility = tail risks</td>
                 </tr>
-                <tr>
+                <tr data-i18n="comm_row_3">
                     <td><strong>Gold</strong></td>
                     <td>$4,050</td>
                     <td>2026 High: $5,589 (Jan 28)</td>
                 </tr>
-                <tr>
+                <tr data-i18n="comm_row_4">
                     <td><strong>Gold Forecast</strong></td>
                     <td>$5,000+ (if geopolitical escalation)</td>
                     <td>📈 Inflation + Uncertainty Hedge</td>
                 </tr>
             </table>
 
-            <h3>Agricultural & Weather Risks</h3>
+            <h3 data-i18n="comm_agri_h3">Agricultural & Weather Risks</h3>
             <div class="alert alert-critical" style="margin-top: 20px;">
                 <div class="alert-icon">🔴</div>
-                <div>
+                <div data-i18n="comm_elnino">
                     <strong>Super El Niño Developing</strong><br>
                     Becoming "historically significant" by end of 2026. Southeast Asia facing severe drought risks (India, Indonesia). Precedent: Cacao prices rose 300% in late 2024 due to weather + demand.
                 </div>
             </div>
 
-            <div class="recommendation-box">
+            <div class="recommendation-box" data-i18n="comm_agri_box">
                 <h4>⚠️ Agricultural Supply Chain Risk</h4>
                 <ul class="action-items">
                     <li>1% increase in drought reduces agricultural exports 0.5-0.7%</li>
@@ -700,27 +780,27 @@
 
         <!-- Earnings & Sentiment -->
         <div class="section">
-            <h2>💹 Earnings & Market Sentiment</h2>
+            <h2 data-i18n="earn_h2">💹 Earnings & Market Sentiment</h2>
 
-            <h3>Earnings Growth Breakdown</h3>
+            <h3 data-i18n="earn_growth_h3">Earnings Growth Breakdown</h3>
             <table class="data-table">
-                <tr>
+                <tr data-i18n="earn_row_1">
                     <td><strong>12-Month Earnings Growth</strong></td>
                     <td>22% (Expected)</td>
                 </tr>
-                <tr>
+                <tr data-i18n="earn_row_2">
                     <td><strong>Q1 2026 Actual</strong></td>
                     <td>+28.6% (Double expectations; highest since Q4 2021)</td>
                 </tr>
-                <tr>
+                <tr data-i18n="earn_row_3">
                     <td><strong>Blended Profit Margin</strong></td>
                     <td>14.8% (Record high)</td>
                 </tr>
-                <tr>
+                <tr data-i18n="earn_row_4">
                     <td><strong>Tech Sector Growth</strong></td>
                     <td>+54.3%</td>
                 </tr>
-                <tr>
+                <tr data-i18n="earn_row_5">
                     <td><strong>Tech ex-NVIDIA/Micron</strong></td>
                     <td>+30.1% (24.2% gap!)</td>
                 </tr>
@@ -728,107 +808,107 @@
 
             <div class="alert alert-critical" style="margin-top: 20px;">
                 <div class="alert-icon">🔴</div>
-                <div>
+                <div data-i18n="earn_concentration">
                     <strong>Concentration Risk & Margin Peak</strong><br>
                     Two stocks (NVIDIA, Micron) driving 24% of sector growth. Record profit margins happening EXACTLY as input costs explode. Expect significant margin compression Q2-Q3.
                 </div>
             </div>
 
-            <h3>Sentiment Indicators</h3>
+            <h3 data-i18n="earn_sentiment_h3">Sentiment Indicators</h3>
             <ul class="action-items">
-                <li><strong>Consumer Sentiment:</strong> Record lows (driven by war/inflation concerns)</li>
-                <li><strong>Market Breadth:</strong> 64.7% above 50-day MA (weak participation)</li>
-                <li><strong>Retail Capitulation:</strong> Likely complete; institutional support masking deterioration</li>
-                <li><strong>Typical Resolution:</strong> Sharp correction when institutions realize few natural buyers remain</li>
+                <li data-i18n="earn_sent_1"><strong>Consumer Sentiment:</strong> Record lows (driven by war/inflation concerns)</li>
+                <li data-i18n="earn_sent_2"><strong>Market Breadth:</strong> 64.7% above 50-day MA (weak participation)</li>
+                <li data-i18n="earn_sent_3"><strong>Retail Capitulation:</strong> Likely complete; institutional support masking deterioration</li>
+                <li data-i18n="earn_sent_4"><strong>Typical Resolution:</strong> Sharp correction when institutions realize few natural buyers remain</li>
             </ul>
         </div>
 
         <!-- Portfolio Recommendations -->
         <div class="section">
-            <h2>💼 Portfolio Positioning & Recommendations</h2>
+            <h2 data-i18n="port_h2">💼 Portfolio Positioning & Recommendations</h2>
 
-            <h3>Strategic Asset Allocation <span class="badge badge-bearish">DEFENSIVE TILT</span></h3>
+            <h3 data-i18n="port_alloc_h3">Strategic Asset Allocation <span class="badge badge-bearish">DEFENSIVE TILT</span></h3>
 
             <div style="margin: 20px 0;">
                 <div class="allocation-item">
-                    <span><strong>Equities</strong> (Down from 70-75%)</span>
+                    <span data-i18n="port_eq_label"><strong>Equities</strong> (Down from 70-75%)</span>
                     <div class="allocation-bar">
                         <div class="allocation-fill" style="width: 60%;">60%</div>
                     </div>
-                    <span>Target: <strong>60%</strong></span>
+                    <span data-i18n="port_eq_target">Target: <strong>60%</strong></span>
                 </div>
 
                 <div class="allocation-item">
-                    <span><strong>Fixed Income & Bonds</strong> (Up from 20%)</span>
+                    <span data-i18n="port_fi_label"><strong>Fixed Income & Bonds</strong> (Up from 20%)</span>
                     <div class="allocation-bar">
                         <div class="allocation-fill" style="width: 25%;">25%</div>
                     </div>
-                    <span>Target: <strong>25%</strong></span>
+                    <span data-i18n="port_fi_target">Target: <strong>25%</strong></span>
                 </div>
 
                 <div class="allocation-item">
-                    <span><strong>Commodities & Hedges</strong> (New allocation)</span>
+                    <span data-i18n="port_comm_label"><strong>Commodities & Hedges</strong> (New allocation)</span>
                     <div class="allocation-bar">
                         <div class="allocation-fill" style="width: 15%;">15%</div>
                     </div>
-                    <span>Target: <strong>15%</strong></span>
+                    <span data-i18n="port_comm_target">Target: <strong>15%</strong></span>
                 </div>
             </div>
 
-            <h3>Equity Allocation (60% of Portfolio)</h3>
+            <h3 data-i18n="port_equity_h3">Equity Allocation (60% of Portfolio)</h3>
             <table class="data-table">
-                <tr>
+                <tr data-i18n="port_eq_header">
                     <th>Sector</th>
                     <th>% of Equity</th>
                     <th>Rationale</th>
                 </tr>
-                <tr>
+                <tr data-i18n="port_eq_row_1">
                     <td><strong>Utilities</strong></td>
                     <td>15%</td>
                     <td>Stable earnings, 3-4% dividend yield, defensive</td>
                 </tr>
-                <tr>
+                <tr data-i18n="port_eq_row_2">
                     <td><strong>Healthcare</strong></td>
                     <td>15%</td>
                     <td>Defensive, pricing power against inflation</td>
                 </tr>
-                <tr>
+                <tr data-i18n="port_eq_row_3">
                     <td><strong>Consumer Staples</strong></td>
                     <td>12%</td>
                     <td>Price leadership, less volume-sensitive</td>
                 </tr>
-                <tr>
+                <tr data-i18n="port_eq_row_4">
                     <td><strong>Financials</strong></td>
                     <td>10%</td>
                     <td>Benefit from higher rates; deposit margins improve</td>
                 </tr>
-                <tr>
+                <tr data-i18n="port_eq_row_5">
                     <td><strong>Industrials</strong></td>
                     <td>8%</td>
                     <td>Limited exposure to infrastructure/construction</td>
                 </tr>
-                <tr>
+                <tr data-i18n="port_eq_row_6">
                     <td><strong>AVOID: Tech Overweight</strong></td>
                     <td style="color: #f44336;"><strong>0%</strong></td>
                     <td style="color: #f44336;">Multiple compression risk; reduce exposure</td>
                 </tr>
             </table>
 
-            <h3>Fixed Income (25% of Portfolio)</h3>
+            <h3 data-i18n="port_fi_h3">Fixed Income (25% of Portfolio)</h3>
             <ul class="action-items">
-                <li><strong>US Treasury Bonds (10%):</strong> 10-year at 4.3% attractive vs. recession risks</li>
-                <li><strong>Investment-Grade Corporates (8%):</strong> 5-6% yields; focus on utility/energy infrastructure</li>
-                <li><strong>TIPS (7%):</strong> Protect against 4%+ inflation; 1.5-2% real yield</li>
+                <li data-i18n="port_fi_1"><strong>US Treasury Bonds (10%):</strong> 10-year at 4.3% attractive vs. recession risks</li>
+                <li data-i18n="port_fi_2"><strong>Investment-Grade Corporates (8%):</strong> 5-6% yields; focus on utility/energy infrastructure</li>
+                <li data-i18n="port_fi_3"><strong>TIPS (7%):</strong> Protect against 4%+ inflation; 1.5-2% real yield</li>
             </ul>
 
-            <h3>Commodities & Hedges (15% of Portfolio)</h3>
+            <h3 data-i18n="port_comm_h3">Commodities & Hedges (15% of Portfolio)</h3>
             <ul class="action-items">
-                <li><strong>Gold (7%):</strong> Inflation & geopolitical hedge. Buy dips to $3,800. Target: $5,000+</li>
-                <li><strong>Oil Futures/Energy ETFs (5%):</strong> Tactical, not core. Buy $65-70, sell rallies to $85-90</li>
-                <li><strong>Agricultural/EM (3%):</strong> Hedge against Super El Niño impacts</li>
+                <li data-i18n="port_comm_1"><strong>Gold (7%):</strong> Inflation & geopolitical hedge. Buy dips to $3,800. Target: $5,000+</li>
+                <li data-i18n="port_comm_2"><strong>Oil Futures/Energy ETFs (5%):</strong> Tactical, not core. Buy $65-70, sell rallies to $85-90</li>
+                <li data-i18n="port_comm_3"><strong>Agricultural/EM (3%):</strong> Hedge against Super El Niño impacts</li>
             </ul>
 
-            <div class="recommendation-box">
+            <div class="recommendation-box" data-i18n="port_tactical_box">
                 <h4>🎯 Tactical Actions (Immediate)</h4>
                 <ol class="action-items" style="list-style: decimal; padding-left: 20px;">
                     <li>REDUCE equity exposure from 70% to 60% (take profits on Tech/Growth)</li>
@@ -842,36 +922,36 @@
 
         <!-- Risk Management -->
         <div class="section">
-            <h2>🛡️ Risk Management & Rebalancing Triggers</h2>
+            <h2 data-i18n="rm_h2">🛡️ Risk Management & Rebalancing Triggers</h2>
 
-            <h3>Action Thresholds - Rebalance When:</h3>
+            <h3 data-i18n="rm_thresholds_h3">Action Thresholds - Rebalance When:</h3>
             <table class="data-table">
-                <tr>
+                <tr data-i18n="rm_header">
                     <th>Trigger</th>
                     <th>Action</th>
                     <th>Rationale</th>
                 </tr>
-                <tr>
+                <tr data-i18n="rm_row_1">
                     <td><strong>Oil > $85/bbl</strong></td>
                     <td>Increase energy allocation 5-10%</td>
                     <td>Supply shock intensifying</td>
                 </tr>
-                <tr>
+                <tr data-i18n="rm_row_2">
                     <td><strong>VIX > 25</strong></td>
                     <td>Reduce equities 10-15%, add bonds</td>
                     <td>Fear premium rising; reversal opportunity</td>
                 </tr>
-                <tr>
+                <tr data-i18n="rm_row_3">
                     <td><strong>S&P 500 < 7,100</strong></td>
                     <td>Buy dips, rebalance to strategic allocation</td>
                     <td>Support broken; psychological level</td>
                 </tr>
-                <tr>
+                <tr data-i18n="rm_row_4">
                     <td><strong>Fed Rate Hike Announced</strong></td>
                     <td>Reduce duration in bonds, favor floating-rate</td>
                     <td>Multiple compression expected</td>
                 </tr>
-                <tr>
+                <tr data-i18n="rm_row_5">
                     <td><strong>Consumer Sentiment < Previous Low</strong></td>
                     <td>Increase defensives, consider hedge options</td>
                     <td>Recession risk rising</td>
@@ -881,79 +961,79 @@
 
         <!-- Scenarios & Outlook -->
         <div class="section">
-            <h2>🔮 6-Month Outlook (Through December 2026)</h2>
+            <h2 data-i18n="out_h2">🔮 6-Month Outlook (Through December 2026)</h2>
 
-            <h3>Base Case Scenario (60% Probability) <span class="badge badge-neutral">NEUTRAL</span></h3>
+            <h3 data-i18n="out_base_h3">Base Case Scenario (60% Probability) <span class="badge badge-neutral">NEUTRAL</span></h3>
             <table class="data-table">
-                <tr>
+                <tr data-i18n="out_base_row_1">
                     <td><strong>S&P 500 Target</strong></td>
                     <td>7,200-7,400 (Flat to modest gains)</td>
                 </tr>
-                <tr>
+                <tr data-i18n="out_base_row_2">
                     <td><strong>Fed Action</strong></td>
                     <td>One 25bp rate hike in Q3; pause signals for H2</td>
                 </tr>
-                <tr>
+                <tr data-i18n="out_base_row_3">
                     <td><strong>Inflation</strong></td>
                     <td>Stabilizes ~3.5% as energy moderates Q3-Q4</td>
                 </tr>
-                <tr>
+                <tr data-i18n="out_base_row_4">
                     <td><strong>Earnings Growth</strong></td>
                     <td>12-15% (Below expectations, margin compression)</td>
                 </tr>
-                <tr>
+                <tr data-i18n="out_base_row_5">
                     <td><strong>Winner</strong></td>
                     <td>Defensive sectors, dividend stocks, bonds</td>
                 </tr>
             </table>
 
-            <h3>Stagflation Scenario (25% Probability) <span class="badge badge-bearish">BEARISH</span></h3>
+            <h3 data-i18n="out_stag_h3">Stagflation Scenario (25% Probability) <span class="badge badge-bearish">BEARISH</span></h3>
             <table class="data-table">
-                <tr>
+                <tr data-i18n="out_stag_row_1">
                     <td><strong>Trigger</strong></td>
                     <td>Iran escalation, oil spike to $120+, Super El Niño crop failures</td>
                 </tr>
-                <tr>
+                <tr data-i18n="out_stag_row_2">
                     <td><strong>S&P 500 Target</strong></td>
                     <td>5,800-6,200 (20-25% Correction)</td>
                 </tr>
-                <tr>
+                <tr data-i18n="out_stag_row_3">
                     <td><strong>Inflation</strong></td>
                     <td>Remains 4%+ through 2027</td>
                 </tr>
-                <tr>
+                <tr data-i18n="out_stag_row_4">
                     <td><strong>Fed Response</strong></td>
                     <td>2-3 rate hikes; market panic; recession fears</td>
                 </tr>
-                <tr>
+                <tr data-i18n="out_stag_row_5">
                     <td><strong>Winners</strong></td>
                     <td>Gold ($5,500), energy stocks, TIPS, defensive dividends</td>
                 </tr>
-                <tr>
+                <tr data-i18n="out_stag_row_6">
                     <td><strong>Losers</strong></td>
                     <td>Growth tech, unprofitable names, consumer discretionary</td>
                 </tr>
             </table>
 
-            <h3>Bull Case Scenario (15% Probability) <span class="badge badge-bullish">BULLISH</span></h3>
+            <h3 data-i18n="out_bull_h3">Bull Case Scenario (15% Probability) <span class="badge badge-bullish">BULLISH</span></h3>
             <table class="data-table">
-                <tr>
+                <tr data-i18n="out_bull_row_1">
                     <td><strong>Trigger</strong></td>
                     <td>Iran conflict de-escalates, Middle East stabilizes, oil falls to $55-60</td>
                 </tr>
-                <tr>
+                <tr data-i18n="out_bull_row_2">
                     <td><strong>S&P 500 Target</strong></td>
                     <td>8,000-8,500 (Rally)</td>
                 </tr>
-                <tr>
+                <tr data-i18n="out_bull_row_3">
                     <td><strong>Inflation</strong></td>
                     <td>Falls to 2.8-3.2% sustainably</td>
                 </tr>
-                <tr>
+                <tr data-i18n="out_bull_row_4">
                     <td><strong>Fed Action</strong></td>
                     <td>Cuts rates 2x in late 2026</td>
                 </tr>
-                <tr>
+                <tr data-i18n="out_bull_row_5">
                     <td><strong>Winners</strong></td>
                     <td>Growth tech re-rates higher; multiple expansion</td>
                 </tr>
@@ -962,48 +1042,254 @@
 
         <!-- Final Recommendation -->
         <div class="section" style="background: linear-gradient(135deg, rgba(244, 67, 54, 0.1) 0%, rgba(255, 152, 0, 0.1) 100%); border-top-color: #ff6f00;">
-            <h2>⚡ FINAL RECOMMENDATION</h2>
+            <h2 data-i18n="final_h2">⚡ FINAL RECOMMENDATION</h2>
 
             <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; border-left: 4px solid #ff6f00;">
-                <h3 style="color: #ff9800; margin-bottom: 15px;">Market Stance: CAUTIOUS NEUTRAL with DEFENSIVE TILT</h3>
+                <h3 style="color: #ff9800; margin-bottom: 15px;" data-i18n="final_stance">Market Stance: CAUTIOUS NEUTRAL with DEFENSIVE TILT</h3>
 
-                <p style="margin-bottom: 15px;">
+                <p style="margin-bottom: 15px;" data-i18n="final_p1">
                     <strong>The equity market is NOT pricing in structural risks correctly.</strong> Supply-driven inflation, geopolitical fragmentation, and deteriorating sentiment create asymmetric downside risk. This is an environment to <strong>preserve capital and collect dividends</strong>, not chase growth.
                 </p>
 
-                <h4 style="color: #4db8ff; margin-top: 20px; margin-bottom: 10px;">Priority Actions:</h4>
+                <h4 style="color: #4db8ff; margin-top: 20px; margin-bottom: 10px;" data-i18n="final_priority_h4">Priority Actions:</h4>
                 <ol class="action-items" style="list-style: decimal; padding-left: 20px;">
-                    <li><strong>Reduce equity exposure 70% → 60%</strong> (take profits on Tech/Growth)</li>
-                    <li><strong>Rotate to defensive sectors</strong> (Utilities 15%, Healthcare 15%, Staples 12%)</li>
-                    <li><strong>Add fixed income</strong> (Treasuries + TIPS = 25% allocation at 4% yields)</li>
-                    <li><strong>Build hedges</strong> (Gold 7%, Oil/Energy 5%, Agricultural 3%)</li>
-                    <li><strong>Avoid concentrated tech bets</strong> (reduce NVIDIA exposure 30-40%)</li>
+                    <li data-i18n="final_priority_1"><strong>Reduce equity exposure 70% → 60%</strong> (take profits on Tech/Growth)</li>
+                    <li data-i18n="final_priority_2"><strong>Rotate to defensive sectors</strong> (Utilities 15%, Healthcare 15%, Staples 12%)</li>
+                    <li data-i18n="final_priority_3"><strong>Add fixed income</strong> (Treasuries + TIPS = 25% allocation at 4% yields)</li>
+                    <li data-i18n="final_priority_4"><strong>Build hedges</strong> (Gold 7%, Oil/Energy 5%, Agricultural 3%)</li>
+                    <li data-i18n="final_priority_5"><strong>Avoid concentrated tech bets</strong> (reduce NVIDIA exposure 30-40%)</li>
                 </ol>
 
-                <h4 style="color: #4db8ff; margin-top: 20px; margin-bottom: 10px;">Expected Returns (6-Month):</h4>
+                <h4 style="color: #4db8ff; margin-top: 20px; margin-bottom: 10px;" data-i18n="final_returns_h4">Expected Returns (6-Month):</h4>
                 <ul class="action-items">
-                    <li><strong>Base Case:</strong> 2-5% return (mostly dividends, minimal capital appreciation)</li>
-                    <li><strong>Tail Risk:</strong> -15% to -25% drawdown (accepted for better risk/reward)</li>
-                    <li><strong>Sharpe Ratio:</strong> Better in defensive positioning despite lower returns</li>
+                    <li data-i18n="final_returns_1"><strong>Base Case:</strong> 2-5% return (mostly dividends, minimal capital appreciation)</li>
+                    <li data-i18n="final_returns_2"><strong>Tail Risk:</strong> -15% to -25% drawdown (accepted for better risk/reward)</li>
+                    <li data-i18n="final_returns_3"><strong>Sharpe Ratio:</strong> Better in defensive positioning despite lower returns</li>
                 </ul>
 
-                <p style="margin-top: 20px; padding: 15px; background: rgba(76, 175, 80, 0.1); border-radius: 4px; border-left: 3px solid #4caf50;">
+                <p style="margin-top: 20px; padding: 15px; background: rgba(76, 175, 80, 0.1); border-radius: 4px; border-left: 3px solid #4caf50;" data-i18n="final_closing">
                     <strong>🎯 This is an environment to preserve capital and collect dividends, not chase growth.</strong> Risk/reward for being fully invested in equities here is poor. Position defensively, build dry powder, and wait for capitulation opportunities.
                 </p>
             </div>
         </div>
 
         <div class="footer">
-            <p>📊 Weekly Market Analysis Dashboard | Updated: <span id="footer-date">Loading...</span></p>
-            <p>Disclaimer: This analysis is for educational purposes. Not financial advice. Consult with a financial advisor before making investment decisions.</p>
-            <p>Data Sources: Federal Reserve, CFTC, BLS, CME Group, Bloomberg, CNBC, Reuters</p>
+            <p><span data-i18n="footer_updated">📊 Weekly Market Analysis Dashboard | Updated:</span> <span id="footer-date">Loading...</span></p>
+            <p data-i18n="footer_disclaimer">Disclaimer: This analysis is for educational purposes. Not financial advice. Consult with a financial advisor before making investment decisions.</p>
+            <p data-i18n="footer_sources">Data Sources: Federal Reserve, CFTC, BLS, CME Group, Bloomberg, CNBC, Reuters</p>
         </div>
     </div>
 
     <script>
+        // ===== Translations (English / Arabic) =====
+        const translations = {
+            header_title: { en: `📈 Weekly Market Analysis Dashboard`, ar: `📈 لوحة تحليل السوق الأسبوعي` },
+            header_subtitle: { en: `Expert Investment Analysis & Portfolio Recommendations`, ar: `تحليل استثماري احترافي وتوصيات للمحفظة` },
+            last_updated_label: { en: `Last Updated:`, ar: `آخر تحديث:` },
+
+            m_sp500_label: { en: `S&P 500`, ar: `مؤشر S&P 500` },
+            m_sp500_change: { en: `▼ -0.10% (Today)`, ar: `▼ -0.10% (اليوم)` },
+            m_nasdaq_label: { en: `Nasdaq Composite`, ar: `مؤشر ناسداك المجمّع` },
+            m_nasdaq_change: { en: `▼ -0.43% (Today)`, ar: `▼ -0.43% (اليوم)` },
+            m_vix_label: { en: `VIX Volatility Index`, ar: `مؤشر التقلب VIX` },
+            m_vix_change: { en: `Moderate Risk`, ar: `مخاطر معتدلة` },
+            m_ffr_label: { en: `Federal Funds Rate`, ar: `سعر الفائدة الفيدرالي` },
+            m_ffr_change: { en: `Holding Steady`, ar: `ثابت دون تغيير` },
+            m_cpi_label: { en: `Inflation (CPI)`, ar: `التضخم (مؤشر أسعار المستهلكين)` },
+            m_cpi_change: { en: `↑ 3rd Consecutive Increase`, ar: `↑ ثالث ارتفاع على التوالي` },
+            m_unemp_label: { en: `Unemployment`, ar: `البطالة` },
+            m_unemp_change: { en: `Stable`, ar: `مستقر` },
+            m_oil_label: { en: `Oil (Brent)`, ar: `النفط (برنت)` },
+            m_oil_change: { en: `Volatile Range`, ar: `نطاق متقلب` },
+            m_gold_label: { en: `Gold`, ar: `الذهب` },
+            m_gold_change: { en: `Safe Haven Bid`, ar: `طلب الملاذ الآمن` },
+
+            risk_h2: { en: `⚠️ Risk Assessment`, ar: `⚠️ تقييم المخاطر` },
+            risk_1: { en: `<strong>Critical Risk: Supply-Driven Inflation</strong><br>CPI accelerating to 4.2% (3rd consecutive month) driven by Iran war energy shocks. Core inflation up to 2.9%. This is structural, not cyclical—supply recovery expected 2-3 years minimum.`, ar: `<strong>خطر حرج: تضخم مدفوع بالعرض</strong><br>تسارع مؤشر أسعار المستهلكين إلى 4.2% (الشهر الثالث على التوالي) مدفوعًا بصدمات الطاقة الناجمة عن الحرب مع إيران. ارتفع التضخم الأساسي إلى 2.9%. هذا تضخم هيكلي وليس دوريًا — من المتوقع أن يستغرق تعافي العرض من سنتين إلى ثلاث سنوات على الأقل.` },
+            risk_2: { en: `<strong>Critical Risk: Geopolitical Fragmentation</strong><br>Strait of Hormuz disruption, critical infrastructure damage, tariff escalation permanent. New supply chains more expensive and less efficient. Trade policy uncertainty remains elevated.`, ar: `<strong>خطر حرج: التشظي الجيوسياسي</strong><br>تعطّل مضيق هرمز، وأضرار في البنية التحتية الحيوية، وتصعيد دائم للرسوم الجمركية. سلاسل التوريد الجديدة أكثر تكلفة وأقل كفاءة. عدم اليقين بشأن السياسة التجارية لا يزال مرتفعًا.` },
+            risk_3: { en: `<strong>Warning: Market Breadth Deterioration</strong><br>Only 64.7% of constituents above 50-day MA (barely above neutral). RSI at 45.1 shows lack of conviction. Vulnerable to catalyst-driven corrections.`, ar: `<strong>تحذير: تدهور اتساع السوق</strong><br>فقط 64.7% من المكوّنات فوق المتوسط المتحرك لـ 50 يومًا (بالكاد فوق المستوى المحايد). مؤشر القوة النسبية عند 45.1 يعكس غياب القناعة. عرضة لتصحيحات مدفوعة بالمحفزات.` },
+            risk_4: { en: `<strong>Warning: Earnings Quality Concerns</strong><br>22% growth heavily concentrated in 2 stocks (NVIDIA, Micron). Core earnings growth only 12-13%. Margins likely peaking as input costs explode.`, ar: `<strong>تحذير: مخاوف بشأن جودة الأرباح</strong><br>نمو بنسبة 22% يتركّز بشكل كبير في سهمين (إنفيديا ومايكرون). نمو الأرباح الأساسي لا يتجاوز 12-13%. من المرجح أن تكون الهوامش قد بلغت ذروتها مع انفجار تكاليف المدخلات.` },
+            risk_5: { en: `<strong>Monitor: Super El Niño Risk</strong><br>Developing "historically significant" Super El Niño by end of 2026. Agricultural supply shocks could spike food prices 20-50%+. Precedent: Cacao +300% in late 2024.`, ar: `<strong>للمراقبة: خطر ظاهرة النينيو الكبرى</strong><br>تطوّر ظاهرة "نينيو كبرى" ذات دلالة تاريخية بحلول نهاية 2026. قد تؤدي صدمات الإمداد الزراعي إلى ارتفاع أسعار الغذاء بنسبة 20-50%+. سابقة: ارتفع الكاكاو بنسبة 300% في أواخر 2024.` },
+            risk_gauge_h3: { en: `Risk Gauge:`, ar: `مقياس المخاطر:` },
+            risk_overall: { en: `Overall Risk Level: <strong style="color: #f44336;">HIGH</strong> (8/10)`, ar: `مستوى المخاطر الإجمالي: <strong style="color: #f44336;">مرتفع</strong> (8/10)` },
+
+            fed_h2: { en: `🏦 Federal Reserve & Monetary Policy`, ar: `🏦 الاحتياطي الفيدرالي والسياسة النقدية` },
+            fed_stance_h3: { en: `Current Stance`, ar: `الموقف الحالي` },
+            fed_row_1: { en: `<td><strong>Funds Rate</strong></td><td>3.5% - 3.75% (Unchanged 4 consecutive meetings)</td>`, ar: `<td><strong>سعر الفائدة</strong></td><td>3.5% - 3.75% (دون تغيير في 4 اجتماعات متتالية)</td>` },
+            fed_row_2: { en: `<td><strong>PCE Projection (Year-End)</strong></td><td>3.6% (revised UP from 2.7% in March)</td>`, ar: `<td><strong>توقعات مؤشر PCE (نهاية العام)</strong></td><td>3.6% (مُراجَع صعودًا من 2.7% في مارس)</td>` },
+            fed_row_3: { en: `<td><strong>Rate Hike Probability</strong></td><td>9 of 18 voting members project hikes before year-end; 6 project TWO 25bp hikes</td>`, ar: `<td><strong>احتمال رفع الفائدة</strong></td><td>9 من 18 عضوًا مصوّتًا يتوقعون رفعًا قبل نهاية العام؛ و6 يتوقعون رفعين بمقدار 25 نقطة أساس</td>` },
+            fed_row_4: { en: `<td><strong>Sentiment</strong></td><td>Hawkish pivot underway. New Fed Chair Warsh signals tighter stance.</td>`, ar: `<td><strong>التوجه العام</strong></td><td>تحوّل متشدد جارٍ. رئيس الفيدرالي الجديد وارش يشير إلى موقف أكثر تشددًا.</td>` },
+            fed_contradiction: { en: `<strong>Critical Contradiction:</strong> Fed claims "solid economic activity" while revising inflation expectations up 90bp in 3 months. Markets priced in "hold" scenario; rate hike announcements will shock to downside.`, ar: `<strong>تناقض حرج:</strong> يدّعي الفيدرالي "نشاطًا اقتصاديًا قويًا" بينما يرفع توقعات التضخم بمقدار 90 نقطة أساس خلال 3 أشهر. سعّرت الأسواق سيناريو "التثبيت"؛ وإعلانات رفع الفائدة ستشكّل صدمة هبوطية.` },
+            fed_impact_box: { en: `<h4>📌 Portfolio Impact</h4><ul class="action-items"><li>Each 25bp rate hike = 15-20% downside pressure on growth/tech valuations</li><li>Adjust portfolio for expected Q3-Q4 tightening</li><li>Increase duration in bonds (they'll re-rate higher on hike announcements)</li></ul>`, ar: `<h4>📌 الأثر على المحفظة</h4><ul class="action-items"><li>كل رفع بمقدار 25 نقطة أساس = ضغط هبوطي بنسبة 15-20% على تقييمات النمو/التكنولوجيا</li><li>اضبط المحفظة استعدادًا للتشديد المتوقع في الربعين الثالث والرابع</li><li>زِد المدة الزمنية في السندات (سيُعاد تسعيرها صعودًا عند إعلانات الرفع)</li></ul>` },
+
+            tech_h2: { en: `📊 Market Technicals`, ar: `📊 المؤشرات الفنية للسوق` },
+            tech_levels_h3: { en: `Current Levels (Late June 2026)`, ar: `المستويات الحالية (أواخر يونيو 2026)` },
+            tech_row_1: { en: `<td><strong>S&P 500</strong></td><td>7,358.22</td><td style="text-align: right;">2026 Range: 6,343 - 7,609</td>`, ar: `<td><strong>S&P 500</strong></td><td>7,358.22</td><td style="text-align: right;">نطاق 2026: 6,343 - 7,609</td>` },
+            tech_row_2: { en: `<td><strong>Nasdaq Composite</strong></td><td>25,476.64</td><td style="text-align: right;">Weakness in semiconductors</td>`, ar: `<td><strong>مؤشر ناسداك المجمّع</strong></td><td>25,476.64</td><td style="text-align: right;">ضعف في أشباه الموصلات</td>` },
+            tech_row_3: { en: `<td><strong>VIX Range (June)</strong></td><td>15.18 - 23.34</td><td style="text-align: right;">Elevated tail risks</td>`, ar: `<td><strong>نطاق VIX (يونيو)</strong></td><td>15.18 - 23.34</td><td style="text-align: right;">مخاطر ذيلية مرتفعة</td>` },
+            tech_row_4: { en: `<td><strong>Market Breadth</strong></td><td>64.7% above 50-day MA</td><td style="text-align: right;">Barely above neutral 50%</td>`, ar: `<td><strong>اتساع السوق</strong></td><td>64.7% فوق متوسط 50 يومًا</td><td style="text-align: right;">بالكاد فوق المحايد 50%</td>` },
+            tech_row_5: { en: `<td><strong>RSI (Momentum)</strong></td><td>45.1</td><td style="text-align: right;">Neutral (no conviction)</td>`, ar: `<td><strong>مؤشر القوة النسبية (الزخم)</strong></td><td>45.1</td><td style="text-align: right;">محايد (لا قناعة)</td>` },
+            tech_assessment_h3: { en: `Technical Assessment`, ar: `التقييم الفني` },
+            tech_assessment_text: { en: `Market in consolidation, vulnerable to catalyst-driven moves. Weak breadth despite index near highs suggests institutional support masking deteriorating fundamentals. Early June 4%+ Nasdaq correction was "fear trade" on inflation; retest likely if more hikes announced.`, ar: `السوق في مرحلة تماسك وعرضة لتحركات مدفوعة بالمحفزات. ضعف الاتساع رغم اقتراب المؤشر من القمم يشير إلى أن الدعم المؤسسي يخفي تدهور الأساسيات. كان تصحيح ناسداك بأكثر من 4% في أوائل يونيو "تجارة خوف" بسبب التضخم؛ ومن المرجح اختبار القاع مجددًا إذا أُعلن عن مزيد من رفع الفائدة.` },
+            tech_sr_h3: { en: `Key Support & Resistance`, ar: `مستويات الدعم والمقاومة الرئيسية` },
+            tech_sr_1: { en: `<strong>Support:</strong> 7,100-7,200 (psychological level), then 6,343 (March lows)`, ar: `<strong>الدعم:</strong> 7,100-7,200 (مستوى نفسي)، ثم 6,343 (قيعان مارس)` },
+            tech_sr_2: { en: `<strong>Resistance:</strong> 7,600 (early June high)`, ar: `<strong>المقاومة:</strong> 7,600 (قمة أوائل يونيو)` },
+            tech_sr_3: { en: `<strong>Trigger:</strong> Breach of 7,100 = likely cascade to 6,800-7,000 on stop losses`, ar: `<strong>المحفّز:</strong> كسر 7,100 = تتالٍ محتمل نحو 6,800-7,000 بفعل أوامر وقف الخسارة` },
+
+            econ_h2: { en: `📉 Economic Indicators`, ar: `📉 المؤشرات الاقتصادية` },
+            econ_data_h3: { en: `Key Data Points (May/June 2026)`, ar: `أهم نقاط البيانات (مايو/يونيو 2026)` },
+            econ_header_row: { en: `<th>Indicator</th><th>Current</th><th>Trend</th><th>Assessment</th>`, ar: `<th>المؤشر</th><th>الحالي</th><th>الاتجاه</th><th>التقييم</th>` },
+            econ_row_1: { en: `<td><strong>Unemployment Rate</strong></td><td>4.3%</td><td class="neutral">Stable</td><td>Labor market cooling gradually</td>`, ar: `<td><strong>معدل البطالة</strong></td><td>4.3%</td><td class="neutral">مستقر</td><td>سوق العمل يبرد تدريجيًا</td>` },
+            econ_row_2: { en: `<td><strong>Headline CPI</strong></td><td>4.2%</td><td class="negative">↑ 3rd month</td><td>Accelerating, driven by energy</td>`, ar: `<td><strong>المؤشر العام لأسعار المستهلكين</strong></td><td>4.2%</td><td class="negative">↑ الشهر الثالث</td><td>متسارع، مدفوع بالطاقة</td>` },
+            econ_row_3: { en: `<td><strong>Core CPI</strong></td><td>2.9%</td><td class="negative">↑ New High</td><td>Broadening beyond energy</td>`, ar: `<td><strong>المؤشر الأساسي لأسعار المستهلكين</strong></td><td>2.9%</td><td class="negative">↑ مستوى قياسي جديد</td><td>يتسع ليتجاوز الطاقة</td>` },
+            econ_row_4: { en: `<td><strong>Energy Inflation</strong></td><td>+23.5% YoY</td><td class="negative">Structural</td><td>Gasoline +40.5%; Iran war impact</td>`, ar: `<td><strong>تضخم الطاقة</strong></td><td>+23.5% سنويًا</td><td class="negative">هيكلي</td><td>البنزين +40.5%؛ أثر الحرب مع إيران</td>` },
+            econ_row_5: { en: `<td><strong>GDP Growth</strong></td><td>Solid Pace</td><td class="positive">Intact</td><td>Strong productivity & investment</td>`, ar: `<td><strong>نمو الناتج المحلي الإجمالي</strong></td><td>وتيرة قوية</td><td class="positive">سليم</td><td>إنتاجية واستثمار قويان</td>` },
+            econ_row_6: { en: `<td><strong>Consumer Sentiment</strong></td><td>Record Low</td><td class="negative">↓ Crisis</td><td>War/inflation impact on cost of living</td>`, ar: `<td><strong>ثقة المستهلك</strong></td><td>أدنى مستوى قياسي</td><td class="negative">↓ أزمة</td><td>أثر الحرب/التضخم على تكلفة المعيشة</td>` },
+            econ_insight_box: { en: `<h4>📌 Key Insight</h4><p>Traditional economic strength masks emerging cracks. Consumer sentiment at record lows suggests demand destruction imminent. Combined with margin compression from inflation, Q2/Q3 earnings may disappoint.</p>`, ar: `<h4>📌 رؤية رئيسية</h4><p>تُخفي القوة الاقتصادية التقليدية تصدّعات ناشئة. ثقة المستهلك عند أدنى مستوياتها القياسية تشير إلى تدمير وشيك للطلب. وبالاقتران مع ضغط الهوامش الناتج عن التضخم، قد تخيّب أرباح الربعين الثاني/الثالث الآمال.</p>` },
+
+            geo_h2: { en: `🌍 Geopolitical Risks`, ar: `🌍 المخاطر الجيوسياسية` },
+            geo_dev_h3: { en: `Critical Developments`, ar: `تطورات حرجة` },
+            geo_1: { en: `<strong>Iran War & Middle East Conflict</strong><br>Strait of Hormuz restricted; critical infrastructure damaged; supply recovery 2-3 years minimum. Brent crude forecast above $100/bbl into 2028.`, ar: `<strong>الحرب مع إيران والصراع في الشرق الأوسط</strong><br>مضيق هرمز مقيّد؛ أضرار في البنية التحتية الحيوية؛ تعافي العرض يحتاج سنتين إلى ثلاث سنوات على الأقل. توقعات خام برنت فوق 100 دولار للبرميل حتى 2028.` },
+            geo_2: { en: `<strong>Trade War Escalation</strong><br>Supreme Court invalidated 2025 tariffs; new tariffs under alternative authorities. US-China tensions remain primary driver. Tariffs now "durable feature" not temporary.`, ar: `<strong>تصعيد الحرب التجارية</strong><br>ألغت المحكمة العليا رسوم 2025؛ رسوم جديدة بموجب صلاحيات بديلة. التوترات بين الولايات المتحدة والصين تبقى المحرّك الرئيسي. أصبحت الرسوم "سمة دائمة" وليست مؤقتة.` },
+            geo_3: { en: `<strong>Supply Chain Restructuring</strong><br>"Friend-shoring" prioritizes geopolitical alignment over efficiency. New supply chains MORE EXPENSIVE and LESS EFFICIENT. Cost inflation embedded for 2-3 years.`, ar: `<strong>إعادة هيكلة سلاسل التوريد</strong><br>"التوريد من الحلفاء" يعطي الأولوية للتوافق الجيوسياسي على الكفاءة. سلاسل التوريد الجديدة أكثر تكلفة وأقل كفاءة. تضخم التكاليف مترسّخ لمدة سنتين إلى ثلاث سنوات.` },
+            geo_tail_h3: { en: `Tail Risks to Monitor`, ar: `مخاطر ذيلية للمراقبة` },
+            geo_tail_1: { en: `<strong>Taiwan Conflict:</strong> Would cripple 40% of global semiconductor supply (catastrophic for tech valuations)`, ar: `<strong>صراع تايوان:</strong> سيشلّ 40% من إمدادات أشباه الموصلات العالمية (كارثي لتقييمات التكنولوجيا)` },
+            geo_tail_2: { en: `<strong>Iran Escalation:</strong> Could push oil to $150-$200/bbl (stagflation scenario)`, ar: `<strong>التصعيد مع إيران:</strong> قد يدفع النفط إلى 150-200 دولار للبرميل (سيناريو ركود تضخمي)` },
+            geo_tail_3: { en: `<strong>US-China Tariff War:</strong> Immediate margin hits for multinationals; recession catalyst`, ar: `<strong>حرب الرسوم بين أمريكا والصين:</strong> ضربات فورية لهوامش الشركات متعددة الجنسيات؛ محفّز للركود` },
+
+            comm_h2: { en: `⛽ Commodities & Weather Impacts`, ar: `⛽ السلع وتأثيرات الطقس` },
+            comm_energy_h3: { en: `Energy & Precious Metals`, ar: `الطاقة والمعادن الثمينة` },
+            comm_row_1: { en: `<td><strong>Oil (Brent)</strong></td><td>$73.74 (Late June)</td><td>↑ Forecast: >$100/bbl into 2028</td>`, ar: `<td><strong>النفط (برنت)</strong></td><td>$73.74 (أواخر يونيو)</td><td>↑ التوقعات: >100 دولار للبرميل حتى 2028</td>` },
+            comm_row_2: { en: `<td><strong>Oil Range (June)</strong></td><td>$70 - $110+</td><td>⚠️ 40% volatility = tail risks</td>`, ar: `<td><strong>نطاق النفط (يونيو)</strong></td><td>$70 - $110+</td><td>⚠️ تقلب 40% = مخاطر ذيلية</td>` },
+            comm_row_3: { en: `<td><strong>Gold</strong></td><td>$4,050</td><td>2026 High: $5,589 (Jan 28)</td>`, ar: `<td><strong>الذهب</strong></td><td>$4,050</td><td>قمة 2026: $5,589 (28 يناير)</td>` },
+            comm_row_4: { en: `<td><strong>Gold Forecast</strong></td><td>$5,000+ (if geopolitical escalation)</td><td>📈 Inflation + Uncertainty Hedge</td>`, ar: `<td><strong>توقعات الذهب</strong></td><td>$5,000+ (في حال التصعيد الجيوسياسي)</td><td>📈 تحوّط ضد التضخم وعدم اليقين</td>` },
+            comm_agri_h3: { en: `Agricultural & Weather Risks`, ar: `المخاطر الزراعية ومخاطر الطقس` },
+            comm_elnino: { en: `<strong>Super El Niño Developing</strong><br>Becoming "historically significant" by end of 2026. Southeast Asia facing severe drought risks (India, Indonesia). Precedent: Cacao prices rose 300% in late 2024 due to weather + demand.`, ar: `<strong>تطوّر ظاهرة النينيو الكبرى</strong><br>تصبح "ذات دلالة تاريخية" بحلول نهاية 2026. جنوب شرق آسيا يواجه مخاطر جفاف شديدة (الهند، إندونيسيا). سابقة: ارتفعت أسعار الكاكاو 300% في أواخر 2024 بفعل الطقس والطلب.` },
+            comm_agri_box: { en: `<h4>⚠️ Agricultural Supply Chain Risk</h4><ul class="action-items"><li>1% increase in drought reduces agricultural exports 0.5-0.7%</li><li>Cascades to food manufacturing production (-0.04% average)</li><li>Affects downstream: pharmaceuticals, skincare, biofuels, plastics</li><li>Food price inflation could spike 20-50%+ in crisis scenario</li></ul>`, ar: `<h4>⚠️ مخاطر سلسلة التوريد الزراعية</h4><ul class="action-items"><li>زيادة الجفاف بنسبة 1% تخفّض الصادرات الزراعية بنسبة 0.5-0.7%</li><li>تتسرّب إلى إنتاج تصنيع الأغذية (-0.04% في المتوسط)</li><li>تؤثر على القطاعات اللاحقة: الأدوية، العناية بالبشرة، الوقود الحيوي، البلاستيك</li><li>قد يقفز تضخم أسعار الغذاء 20-50%+ في سيناريو الأزمة</li></ul>` },
+
+            earn_h2: { en: `💹 Earnings & Market Sentiment`, ar: `💹 الأرباح ومعنويات السوق` },
+            earn_growth_h3: { en: `Earnings Growth Breakdown`, ar: `تفصيل نمو الأرباح` },
+            earn_row_1: { en: `<td><strong>12-Month Earnings Growth</strong></td><td>22% (Expected)</td>`, ar: `<td><strong>نمو الأرباح خلال 12 شهرًا</strong></td><td>22% (متوقع)</td>` },
+            earn_row_2: { en: `<td><strong>Q1 2026 Actual</strong></td><td>+28.6% (Double expectations; highest since Q4 2021)</td>`, ar: `<td><strong>الربع الأول 2026 الفعلي</strong></td><td>+28.6% (ضعف التوقعات؛ الأعلى منذ الربع الرابع 2021)</td>` },
+            earn_row_3: { en: `<td><strong>Blended Profit Margin</strong></td><td>14.8% (Record high)</td>`, ar: `<td><strong>هامش الربح المدمج</strong></td><td>14.8% (مستوى قياسي)</td>` },
+            earn_row_4: { en: `<td><strong>Tech Sector Growth</strong></td><td>+54.3%</td>`, ar: `<td><strong>نمو قطاع التكنولوجيا</strong></td><td>+54.3%</td>` },
+            earn_row_5: { en: `<td><strong>Tech ex-NVIDIA/Micron</strong></td><td>+30.1% (24.2% gap!)</td>`, ar: `<td><strong>التكنولوجيا باستثناء إنفيديا/مايكرون</strong></td><td>+30.1% (فجوة 24.2%!)</td>` },
+            earn_concentration: { en: `<strong>Concentration Risk & Margin Peak</strong><br>Two stocks (NVIDIA, Micron) driving 24% of sector growth. Record profit margins happening EXACTLY as input costs explode. Expect significant margin compression Q2-Q3.`, ar: `<strong>مخاطر التركّز وذروة الهوامش</strong><br>سهمان (إنفيديا، مايكرون) يقودان 24% من نمو القطاع. تتحقق هوامش ربح قياسية تمامًا مع انفجار تكاليف المدخلات. توقّع ضغطًا كبيرًا على الهوامش في الربعين الثاني والثالث.` },
+            earn_sentiment_h3: { en: `Sentiment Indicators`, ar: `مؤشرات المعنويات` },
+            earn_sent_1: { en: `<strong>Consumer Sentiment:</strong> Record lows (driven by war/inflation concerns)`, ar: `<strong>ثقة المستهلك:</strong> أدنى مستويات قياسية (مدفوعة بمخاوف الحرب/التضخم)` },
+            earn_sent_2: { en: `<strong>Market Breadth:</strong> 64.7% above 50-day MA (weak participation)`, ar: `<strong>اتساع السوق:</strong> 64.7% فوق متوسط 50 يومًا (مشاركة ضعيفة)` },
+            earn_sent_3: { en: `<strong>Retail Capitulation:</strong> Likely complete; institutional support masking deterioration`, ar: `<strong>استسلام أفراد التجزئة:</strong> على الأرجح اكتمل؛ والدعم المؤسسي يخفي التدهور` },
+            earn_sent_4: { en: `<strong>Typical Resolution:</strong> Sharp correction when institutions realize few natural buyers remain`, ar: `<strong>النتيجة المعتادة:</strong> تصحيح حاد عندما تدرك المؤسسات ندرة المشترين الطبيعيين المتبقين` },
+
+            port_h2: { en: `💼 Portfolio Positioning & Recommendations`, ar: `💼 تموضع المحفظة والتوصيات` },
+            port_alloc_h3: { en: `Strategic Asset Allocation <span class="badge badge-bearish">DEFENSIVE TILT</span>`, ar: `التوزيع الاستراتيجي للأصول <span class="badge badge-bearish">ميل دفاعي</span>` },
+            port_eq_label: { en: `<strong>Equities</strong> (Down from 70-75%)`, ar: `<strong>الأسهم</strong> (انخفاضًا من 70-75%)` },
+            port_eq_target: { en: `Target: <strong>60%</strong>`, ar: `الهدف: <strong>60%</strong>` },
+            port_fi_label: { en: `<strong>Fixed Income & Bonds</strong> (Up from 20%)`, ar: `<strong>الدخل الثابت والسندات</strong> (ارتفاعًا من 20%)` },
+            port_fi_target: { en: `Target: <strong>25%</strong>`, ar: `الهدف: <strong>25%</strong>` },
+            port_comm_label: { en: `<strong>Commodities & Hedges</strong> (New allocation)`, ar: `<strong>السلع والتحوّطات</strong> (تخصيص جديد)` },
+            port_comm_target: { en: `Target: <strong>15%</strong>`, ar: `الهدف: <strong>15%</strong>` },
+            port_equity_h3: { en: `Equity Allocation (60% of Portfolio)`, ar: `توزيع الأسهم (60% من المحفظة)` },
+            port_eq_header: { en: `<th>Sector</th><th>% of Equity</th><th>Rationale</th>`, ar: `<th>القطاع</th><th>% من الأسهم</th><th>المبرر</th>` },
+            port_eq_row_1: { en: `<td><strong>Utilities</strong></td><td>15%</td><td>Stable earnings, 3-4% dividend yield, defensive</td>`, ar: `<td><strong>المرافق</strong></td><td>15%</td><td>أرباح مستقرة، عائد توزيعات 3-4%، دفاعي</td>` },
+            port_eq_row_2: { en: `<td><strong>Healthcare</strong></td><td>15%</td><td>Defensive, pricing power against inflation</td>`, ar: `<td><strong>الرعاية الصحية</strong></td><td>15%</td><td>دفاعي، قدرة تسعيرية ضد التضخم</td>` },
+            port_eq_row_3: { en: `<td><strong>Consumer Staples</strong></td><td>12%</td><td>Price leadership, less volume-sensitive</td>`, ar: `<td><strong>السلع الاستهلاكية الأساسية</strong></td><td>12%</td><td>ريادة في التسعير، أقل حساسية للحجم</td>` },
+            port_eq_row_4: { en: `<td><strong>Financials</strong></td><td>10%</td><td>Benefit from higher rates; deposit margins improve</td>`, ar: `<td><strong>القطاع المالي</strong></td><td>10%</td><td>يستفيد من ارتفاع الفائدة؛ تتحسّن هوامش الودائع</td>` },
+            port_eq_row_5: { en: `<td><strong>Industrials</strong></td><td>8%</td><td>Limited exposure to infrastructure/construction</td>`, ar: `<td><strong>الصناعات</strong></td><td>8%</td><td>تعرّض محدود للبنية التحتية/البناء</td>` },
+            port_eq_row_6: { en: `<td><strong>AVOID: Tech Overweight</strong></td><td style="color: #f44336;"><strong>0%</strong></td><td style="color: #f44336;">Multiple compression risk; reduce exposure</td>`, ar: `<td><strong>تجنّب: زيادة وزن التكنولوجيا</strong></td><td style="color: #f44336;"><strong>0%</strong></td><td style="color: #f44336;">مخاطر ضغط المضاعفات؛ قلّل التعرّض</td>` },
+            port_fi_h3: { en: `Fixed Income (25% of Portfolio)`, ar: `الدخل الثابت (25% من المحفظة)` },
+            port_fi_1: { en: `<strong>US Treasury Bonds (10%):</strong> 10-year at 4.3% attractive vs. recession risks`, ar: `<strong>سندات الخزانة الأمريكية (10%):</strong> عائد 10 سنوات عند 4.3% جذاب مقابل مخاطر الركود` },
+            port_fi_2: { en: `<strong>Investment-Grade Corporates (8%):</strong> 5-6% yields; focus on utility/energy infrastructure`, ar: `<strong>سندات الشركات بدرجة استثمارية (8%):</strong> عوائد 5-6%؛ التركيز على البنية التحتية للمرافق/الطاقة` },
+            port_fi_3: { en: `<strong>TIPS (7%):</strong> Protect against 4%+ inflation; 1.5-2% real yield`, ar: `<strong>السندات المحمية من التضخم TIPS (7%):</strong> حماية ضد تضخم 4%+؛ عائد حقيقي 1.5-2%` },
+            port_comm_h3: { en: `Commodities & Hedges (15% of Portfolio)`, ar: `السلع والتحوّطات (15% من المحفظة)` },
+            port_comm_1: { en: `<strong>Gold (7%):</strong> Inflation & geopolitical hedge. Buy dips to $3,800. Target: $5,000+`, ar: `<strong>الذهب (7%):</strong> تحوّط ضد التضخم والجيوسياسة. اشترِ عند الانخفاضات إلى $3,800. الهدف: $5,000+` },
+            port_comm_2: { en: `<strong>Oil Futures/Energy ETFs (5%):</strong> Tactical, not core. Buy $65-70, sell rallies to $85-90`, ar: `<strong>عقود النفط الآجلة/صناديق الطاقة (5%):</strong> تكتيكي وليس أساسيًا. اشترِ عند $65-70، وبِع عند الارتفاعات إلى $85-90` },
+            port_comm_3: { en: `<strong>Agricultural/EM (3%):</strong> Hedge against Super El Niño impacts`, ar: `<strong>الزراعة/الأسواق الناشئة (3%):</strong> تحوّط ضد آثار النينيو الكبرى` },
+            port_tactical_box: { en: `<h4>🎯 Tactical Actions (Immediate)</h4><ol class="action-items" style="list-style: decimal; padding-left: 20px;"><li>REDUCE equity exposure from 70% to 60% (take profits on Tech/Growth)</li><li>ROTATE into defensive sectors (Utilities, Healthcare, Staples)</li><li>ADD fixed income (Treasuries + TIPS for 4% yields with less risk)</li><li>BUILD hedge with gold (5-7% allocation for insurance)</li><li>AVOID concentrated tech bets; reduce NVIDIA exposure</li></ol>`, ar: `<h4>🎯 إجراءات تكتيكية (فورية)</h4><ol class="action-items" style="list-style: decimal; padding-left: 20px;"><li>خفّض التعرّض للأسهم من 70% إلى 60% (جنِ الأرباح في التكنولوجيا/النمو)</li><li>تدوير نحو القطاعات الدفاعية (المرافق، الرعاية الصحية، السلع الأساسية)</li><li>أضف دخلًا ثابتًا (سندات الخزانة + TIPS لعوائد 4% بمخاطر أقل)</li><li>ابنِ تحوّطًا بالذهب (تخصيص 5-7% كتأمين)</li><li>تجنّب الرهانات المركّزة على التكنولوجيا؛ قلّل التعرّض لإنفيديا</li></ol>` },
+
+            rm_h2: { en: `🛡️ Risk Management & Rebalancing Triggers`, ar: `🛡️ إدارة المخاطر ومحفّزات إعادة التوازن` },
+            rm_thresholds_h3: { en: `Action Thresholds - Rebalance When:`, ar: `حدود الإجراء — أعد التوازن عند:` },
+            rm_header: { en: `<th>Trigger</th><th>Action</th><th>Rationale</th>`, ar: `<th>المحفّز</th><th>الإجراء</th><th>المبرر</th>` },
+            rm_row_1: { en: `<td><strong>Oil > $85/bbl</strong></td><td>Increase energy allocation 5-10%</td><td>Supply shock intensifying</td>`, ar: `<td><strong>النفط > $85/برميل</strong></td><td>زِد تخصيص الطاقة 5-10%</td><td>تفاقم صدمة العرض</td>` },
+            rm_row_2: { en: `<td><strong>VIX > 25</strong></td><td>Reduce equities 10-15%, add bonds</td><td>Fear premium rising; reversal opportunity</td>`, ar: `<td><strong>VIX > 25</strong></td><td>قلّل الأسهم 10-15%، أضف سندات</td><td>ارتفاع علاوة الخوف؛ فرصة انعكاس</td>` },
+            rm_row_3: { en: `<td><strong>S&P 500 < 7,100</strong></td><td>Buy dips, rebalance to strategic allocation</td><td>Support broken; psychological level</td>`, ar: `<td><strong>S&P 500 < 7,100</strong></td><td>اشترِ الانخفاضات، أعد التوازن للتوزيع الاستراتيجي</td><td>كسر الدعم؛ مستوى نفسي</td>` },
+            rm_row_4: { en: `<td><strong>Fed Rate Hike Announced</strong></td><td>Reduce duration in bonds, favor floating-rate</td><td>Multiple compression expected</td>`, ar: `<td><strong>الإعلان عن رفع الفائدة</strong></td><td>قلّل المدة في السندات، فضّل الفائدة المتغيرة</td><td>متوقع ضغط على المضاعفات</td>` },
+            rm_row_5: { en: `<td><strong>Consumer Sentiment < Previous Low</strong></td><td>Increase defensives, consider hedge options</td><td>Recession risk rising</td>`, ar: `<td><strong>ثقة المستهلك < القاع السابق</strong></td><td>زِد الدفاعيات، فكّر في خيارات التحوّط</td><td>ارتفاع مخاطر الركود</td>` },
+
+            out_h2: { en: `🔮 6-Month Outlook (Through December 2026)`, ar: `🔮 نظرة لستة أشهر (حتى ديسمبر 2026)` },
+            out_base_h3: { en: `Base Case Scenario (60% Probability) <span class="badge badge-neutral">NEUTRAL</span>`, ar: `السيناريو الأساسي (احتمال 60%) <span class="badge badge-neutral">محايد</span>` },
+            out_base_row_1: { en: `<td><strong>S&P 500 Target</strong></td><td>7,200-7,400 (Flat to modest gains)</td>`, ar: `<td><strong>هدف S&P 500</strong></td><td>7,200-7,400 (ثبات إلى مكاسب متواضعة)</td>` },
+            out_base_row_2: { en: `<td><strong>Fed Action</strong></td><td>One 25bp rate hike in Q3; pause signals for H2</td>`, ar: `<td><strong>إجراء الفيدرالي</strong></td><td>رفع واحد 25 نقطة أساس في الربع الثالث؛ إشارات توقف للنصف الثاني</td>` },
+            out_base_row_3: { en: `<td><strong>Inflation</strong></td><td>Stabilizes ~3.5% as energy moderates Q3-Q4</td>`, ar: `<td><strong>التضخم</strong></td><td>يستقر عند ~3.5% مع اعتدال الطاقة في الربعين الثالث والرابع</td>` },
+            out_base_row_4: { en: `<td><strong>Earnings Growth</strong></td><td>12-15% (Below expectations, margin compression)</td>`, ar: `<td><strong>نمو الأرباح</strong></td><td>12-15% (دون التوقعات، ضغط على الهوامش)</td>` },
+            out_base_row_5: { en: `<td><strong>Winner</strong></td><td>Defensive sectors, dividend stocks, bonds</td>`, ar: `<td><strong>الرابح</strong></td><td>القطاعات الدفاعية، أسهم التوزيعات، السندات</td>` },
+            out_stag_h3: { en: `Stagflation Scenario (25% Probability) <span class="badge badge-bearish">BEARISH</span>`, ar: `سيناريو الركود التضخمي (احتمال 25%) <span class="badge badge-bearish">هبوطي</span>` },
+            out_stag_row_1: { en: `<td><strong>Trigger</strong></td><td>Iran escalation, oil spike to $120+, Super El Niño crop failures</td>`, ar: `<td><strong>المحفّز</strong></td><td>تصعيد إيران، قفزة النفط فوق $120، فشل محاصيل النينيو الكبرى</td>` },
+            out_stag_row_2: { en: `<td><strong>S&P 500 Target</strong></td><td>5,800-6,200 (20-25% Correction)</td>`, ar: `<td><strong>هدف S&P 500</strong></td><td>5,800-6,200 (تصحيح 20-25%)</td>` },
+            out_stag_row_3: { en: `<td><strong>Inflation</strong></td><td>Remains 4%+ through 2027</td>`, ar: `<td><strong>التضخم</strong></td><td>يبقى 4%+ حتى 2027</td>` },
+            out_stag_row_4: { en: `<td><strong>Fed Response</strong></td><td>2-3 rate hikes; market panic; recession fears</td>`, ar: `<td><strong>استجابة الفيدرالي</strong></td><td>2-3 رفعات للفائدة؛ ذعر في السوق؛ مخاوف ركود</td>` },
+            out_stag_row_5: { en: `<td><strong>Winners</strong></td><td>Gold ($5,500), energy stocks, TIPS, defensive dividends</td>`, ar: `<td><strong>الرابحون</strong></td><td>الذهب ($5,500)، أسهم الطاقة، TIPS، التوزيعات الدفاعية</td>` },
+            out_stag_row_6: { en: `<td><strong>Losers</strong></td><td>Growth tech, unprofitable names, consumer discretionary</td>`, ar: `<td><strong>الخاسرون</strong></td><td>تكنولوجيا النمو، الأسماء غير الربحية، السلع الاستهلاكية الكمالية</td>` },
+            out_bull_h3: { en: `Bull Case Scenario (15% Probability) <span class="badge badge-bullish">BULLISH</span>`, ar: `السيناريو الصاعد (احتمال 15%) <span class="badge badge-bullish">صعودي</span>` },
+            out_bull_row_1: { en: `<td><strong>Trigger</strong></td><td>Iran conflict de-escalates, Middle East stabilizes, oil falls to $55-60</td>`, ar: `<td><strong>المحفّز</strong></td><td>تهدئة الصراع مع إيران، استقرار الشرق الأوسط، هبوط النفط إلى $55-60</td>` },
+            out_bull_row_2: { en: `<td><strong>S&P 500 Target</strong></td><td>8,000-8,500 (Rally)</td>`, ar: `<td><strong>هدف S&P 500</strong></td><td>8,000-8,500 (موجة صعود)</td>` },
+            out_bull_row_3: { en: `<td><strong>Inflation</strong></td><td>Falls to 2.8-3.2% sustainably</td>`, ar: `<td><strong>التضخم</strong></td><td>يهبط إلى 2.8-3.2% بشكل مستدام</td>` },
+            out_bull_row_4: { en: `<td><strong>Fed Action</strong></td><td>Cuts rates 2x in late 2026</td>`, ar: `<td><strong>إجراء الفيدرالي</strong></td><td>خفض الفائدة مرتين في أواخر 2026</td>` },
+            out_bull_row_5: { en: `<td><strong>Winners</strong></td><td>Growth tech re-rates higher; multiple expansion</td>`, ar: `<td><strong>الرابحون</strong></td><td>إعادة تسعير تكنولوجيا النمو صعودًا؛ توسّع المضاعفات</td>` },
+
+            final_h2: { en: `⚡ FINAL RECOMMENDATION`, ar: `⚡ التوصية النهائية` },
+            final_stance: { en: `Market Stance: CAUTIOUS NEUTRAL with DEFENSIVE TILT`, ar: `موقف السوق: محايد حذر مع ميل دفاعي` },
+            final_p1: { en: `<strong>The equity market is NOT pricing in structural risks correctly.</strong> Supply-driven inflation, geopolitical fragmentation, and deteriorating sentiment create asymmetric downside risk. This is an environment to <strong>preserve capital and collect dividends</strong>, not chase growth.`, ar: `<strong>سوق الأسهم لا يسعّر المخاطر الهيكلية بشكل صحيح.</strong> التضخم المدفوع بالعرض، والتشظي الجيوسياسي، وتدهور المعنويات تخلق مخاطر هبوطية غير متماثلة. هذه بيئة <strong>للحفاظ على رأس المال وتحصيل التوزيعات</strong>، وليست لمطاردة النمو.` },
+            final_priority_h4: { en: `Priority Actions:`, ar: `إجراءات ذات أولوية:` },
+            final_priority_1: { en: `<strong>Reduce equity exposure 70% → 60%</strong> (take profits on Tech/Growth)`, ar: `<strong>خفّض التعرّض للأسهم 70% ← 60%</strong> (جنِ الأرباح في التكنولوجيا/النمو)` },
+            final_priority_2: { en: `<strong>Rotate to defensive sectors</strong> (Utilities 15%, Healthcare 15%, Staples 12%)`, ar: `<strong>تدوير نحو القطاعات الدفاعية</strong> (المرافق 15%، الرعاية الصحية 15%، السلع الأساسية 12%)` },
+            final_priority_3: { en: `<strong>Add fixed income</strong> (Treasuries + TIPS = 25% allocation at 4% yields)`, ar: `<strong>أضف دخلًا ثابتًا</strong> (سندات الخزانة + TIPS = تخصيص 25% بعوائد 4%)` },
+            final_priority_4: { en: `<strong>Build hedges</strong> (Gold 7%, Oil/Energy 5%, Agricultural 3%)`, ar: `<strong>ابنِ تحوّطات</strong> (الذهب 7%، النفط/الطاقة 5%، الزراعة 3%)` },
+            final_priority_5: { en: `<strong>Avoid concentrated tech bets</strong> (reduce NVIDIA exposure 30-40%)`, ar: `<strong>تجنّب الرهانات المركّزة على التكنولوجيا</strong> (قلّل التعرّض لإنفيديا 30-40%)` },
+            final_returns_h4: { en: `Expected Returns (6-Month):`, ar: `العوائد المتوقعة (6 أشهر):` },
+            final_returns_1: { en: `<strong>Base Case:</strong> 2-5% return (mostly dividends, minimal capital appreciation)`, ar: `<strong>السيناريو الأساسي:</strong> عائد 2-5% (معظمه توزيعات، نمو رأسمالي ضئيل)` },
+            final_returns_2: { en: `<strong>Tail Risk:</strong> -15% to -25% drawdown (accepted for better risk/reward)`, ar: `<strong>المخاطر الذيلية:</strong> تراجع -15% إلى -25% (مقبول لتحسين نسبة المخاطرة/العائد)` },
+            final_returns_3: { en: `<strong>Sharpe Ratio:</strong> Better in defensive positioning despite lower returns`, ar: `<strong>نسبة شارب:</strong> أفضل في التموضع الدفاعي رغم انخفاض العوائد` },
+            final_closing: { en: `<strong>🎯 This is an environment to preserve capital and collect dividends, not chase growth.</strong> Risk/reward for being fully invested in equities here is poor. Position defensively, build dry powder, and wait for capitulation opportunities.`, ar: `<strong>🎯 هذه بيئة للحفاظ على رأس المال وتحصيل التوزيعات، وليست لمطاردة النمو.</strong> نسبة المخاطرة/العائد للاستثمار الكامل في الأسهم هنا ضعيفة. تموضع بشكل دفاعي، وابنِ سيولة احتياطية، وانتظر فرص الاستسلام.` },
+
+            footer_updated: { en: `📊 Weekly Market Analysis Dashboard | Updated:`, ar: `📊 لوحة تحليل السوق الأسبوعي | تم التحديث:` },
+            footer_disclaimer: { en: `Disclaimer: This analysis is for educational purposes. Not financial advice. Consult with a financial advisor before making investment decisions.`, ar: `إخلاء مسؤولية: هذا التحليل لأغراض تعليمية. ليس نصيحة مالية. استشر مستشارًا ماليًا قبل اتخاذ قرارات استثمارية.` },
+            footer_sources: { en: `Data Sources: Federal Reserve, CFTC, BLS, CME Group, Bloomberg, CNBC, Reuters`, ar: `مصادر البيانات: الاحتياطي الفيدرالي، CFTC، BLS، مجموعة CME، بلومبرغ، CNBC، رويترز` }
+        };
+
+        let currentLang = 'en';
+
+        function applyTranslations(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(function(el) {
+                const key = el.getAttribute('data-i18n');
+                const entry = translations[key];
+                if (entry && entry[lang] !== undefined) {
+                    el.innerHTML = entry[lang];
+                }
+            });
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+            applyTranslations(lang);
+            const btn = document.getElementById('lang-toggle');
+            if (btn) {
+                btn.textContent = (lang === 'ar') ? 'English' : 'العربية';
+            }
+            try { localStorage.setItem('lang', lang); } catch (e) {}
+            updateTimestamps();
+        }
+
+        function toggleLanguage() {
+            setLanguage(currentLang === 'ar' ? 'en' : 'ar');
+        }
+
         // Update timestamps
         function updateTimestamps() {
             const now = new Date();
+            const locale = (currentLang === 'ar') ? 'ar' : 'en-US';
             const options = {
                 weekday: 'long',
                 year: 'numeric',
@@ -1015,8 +1301,8 @@
                 timeZoneName: 'short'
             };
 
-            document.getElementById('update-time').textContent = now.toLocaleDateString('en-US', options);
-            document.getElementById('footer-date').textContent = now.toLocaleDateString('en-US', {
+            document.getElementById('update-time').textContent = now.toLocaleDateString(locale, options);
+            document.getElementById('footer-date').textContent = now.toLocaleDateString(locale, {
                 year: 'numeric',
                 month: '2-digit',
                 day: '2-digit'
@@ -1024,7 +1310,11 @@
         }
 
         // Initialize on page load
-        window.addEventListener('DOMContentLoaded', updateTimestamps);
+        window.addEventListener('DOMContentLoaded', function() {
+            let saved = null;
+            try { saved = localStorage.getItem('lang'); } catch (e) {}
+            setLanguage(saved === 'ar' ? 'ar' : 'en');
+        });
 
         // Update every minute
         setInterval(updateTimestamps, 60000);
