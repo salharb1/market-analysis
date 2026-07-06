@@ -61,6 +61,10 @@
         .badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: 600; margin-left: 10px; }
         .badge-bearish { background: #f44336; color: #fff; }
         .badge-neutral { background: #ff9800; color: #fff; }
+        .exec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .exec-card { background: rgba(77, 184, 255, 0.06); border: 1px solid rgba(77, 184, 255, 0.25); border-radius: 8px; padding: 18px; }
+        .gauge-track { position: relative; height: 10px; border-radius: 5px; background: linear-gradient(90deg, #4caf50 0%, #ff9800 55%, #f44336 100%); margin-top: 14px; }
+        .gauge-marker { position: absolute; top: -5px; width: 4px; height: 20px; background: #fff; border-radius: 2px; box-shadow: 0 0 6px rgba(255,255,255,0.8); }
         @media (max-width: 768px) { .header h1 { font-size: 1.8em; } .section { padding: 20px; } .metric-card { padding: 15px; } .metric-value { font-size: 1.5em; } }
     </style>
 </head>
@@ -82,6 +86,41 @@
             </div>
         </div>
 
+        <!-- 30-Second Brief -->
+        <div class="section" style="border-top-color:#4db8ff;">
+            <h2 data-en="⚡ 30-Second Brief" data-ar="⚡ ملخص في 30 ثانية">⚡ 30-Second Brief</h2>
+            <div class="exec-grid">
+                <div class="exec-card">
+                    <div class="metric-label" data-en="Stance" data-ar="الموقف">Stance</div>
+                    <div style="font-size:1.25em;font-weight:700;color:#ff9800;" data-en="CAUTIOUS NEUTRAL — Defensive Tilt" data-ar="حياد حذر — ميل دفاعي">CAUTIOUS NEUTRAL — Defensive Tilt</div>
+                    <div style="margin-top:8px;color:#b0b0b0;font-size:0.9em;" data-en="Record highs priced for a resolution that hasn't happened yet." data-ar="مستويات قياسية تُسعّر حلاً لم يحدث بعد.">Record highs priced for a resolution that hasn't happened yet.</div>
+                </div>
+                <div class="exec-card">
+                    <div class="metric-label" data-en="Risk Level" data-ar="مستوى المخاطر">Risk Level</div>
+                    <div style="font-size:1.25em;font-weight:700;color:#ff9800;">7/10 <span style="font-size:0.7em;color:#4caf50;" data-en="(▼ from 8/10)" data-ar="(▼ من 8/10)">(▼ from 8/10)</span></div>
+                    <div class="gauge-track"><div class="gauge-marker" style="left:70%;"></div></div>
+                </div>
+                <div class="exec-card">
+                    <div class="metric-label" data-en="Next Catalysts" data-ar="المحفزات القادمة">Next Catalysts</div>
+                    <div style="font-size:0.95em;line-height:1.9;" data-en="Tariff hearings Jul 7 · June CPI Jul 14 · Tariff cliff ~Jul 24 · FOMC Jul 28-29" data-ar="جلسات التعريفات 7 يوليو · تضخم يونيو 14 يوليو · انتهاء التعريفات ~24 يوليو · الفيدرالي 28-29 يوليو">Tariff hearings Jul 7 · June CPI Jul 14 · Tariff cliff ~Jul 24 · FOMC Jul 28-29</div>
+                </div>
+            </div>
+            <h3 data-en="If You Only Do 3 Things" data-ar="إن كنت ستفعل 3 أشياء فقط">If You Only Do 3 Things</h3>
+            <ul class="action-items">
+                <li data-en="Trim high-P/E tech (>25x) into this record-high strength — Mag 7 already rolling over (-12.7% MTD)" data-ar="قلّص التقنية عالية المضاعفات (>25x) مستغلاً القوة الحالية — أسهم Mag 7 تتراجع بالفعل (-12.7٪ شهرياً)">Trim high-P/E tech (&gt;25x) into this record-high strength — Mag 7 already rolling over (-12.7% MTD)</li>
+                <li data-en="Hold the 60/25/15 defensive allocation — do NOT add risk before the Jul 14 CPI and the ~Jul 24 tariff decision" data-ar="حافظ على التوزيع الدفاعي 60/25/15 — لا تُضِف مخاطر قبل تضخم 14 يوليو وقرار التعريفات ~24 يوليو">Hold the 60/25/15 defensive allocation — do NOT add risk before the Jul 14 CPI and the ~Jul 24 tariff decision</li>
+                <li data-en="Set alerts on the key levels below — they are the triggers, not the news headlines" data-ar="ضع تنبيهات على المستويات الرئيسية أدناه — فهي المحفزات وليست عناوين الأخبار">Set alerts on the key levels below — they are the triggers, not the news headlines</li>
+            </ul>
+            <h3 data-en="Key Levels to Watch" data-ar="مستويات رئيسية للمراقبة">Key Levels to Watch</h3>
+            <table class="data-table">
+                <tr><th data-en="Level" data-ar="المستوى">Level</th><th data-en="Meaning / Action" data-ar="المعنى / الإجراء">Meaning / Action</th></tr>
+                <tr><td><strong>S&P 500 &lt; 7,100</strong></td><td data-en="Correction underway — start buying quality dividend names in tranches" data-ar="تصحيح جارٍ — ابدأ شراء أسهم التوزيعات الجيدة على دفعات">Correction underway — start buying quality dividend names in tranches</td></tr>
+                <tr><td><strong>VIX &gt; 25</strong></td><td data-en="De-risk: cut equities 10-15%, add bonds" data-ar="خفّض المخاطر: قلّص الأسهم 10-15٪ وأضف سندات">De-risk: cut equities 10-15%, add bonds</td></tr>
+                <tr><td><strong data-en="Oil &gt; $85" data-ar="النفط &gt; 85$">Oil &gt; $85</strong></td><td data-en="Hormuz re-escalation — add energy 5-10%, expect inflation re-acceleration" data-ar="تصعيد جديد في هرمز — أضف طاقة 5-10٪ وتوقّع عودة تسارع التضخم">Hormuz re-escalation — add energy 5-10%, expect inflation re-acceleration</td></tr>
+                <tr><td><strong data-en="Gold &lt; $4,000" data-ar="الذهب &lt; 4,000$">Gold &lt; $4,000</strong></td><td data-en="Add to hedge — target $4,500-5,000 on any Iran re-escalation" data-ar="عزّز التحوط — الهدف 4,500-5,000$ عند أي تصعيد إيراني">Add to hedge — target $4,500-5,000 on any Iran re-escalation</td></tr>
+            </table>
+        </div>
+
         <!-- Market Summary -->
         <div class="market-summary">
             <div class="metric-card"><div class="metric-label" data-en="S&P 500" data-ar="مؤشر S&P 500">S&P 500</div><div class="metric-value">7,483</div><div class="metric-change positive">▲ Record High</div></div>
@@ -93,6 +132,43 @@
             <div class="metric-card"><div class="metric-label" data-en="Unemployment" data-ar="البطالة">Unemployment</div><div class="metric-value">4.2%</div><div class="metric-change positive">↓ Ticked Down</div></div>
             <div class="metric-card"><div class="metric-label" data-en="Oil (Brent)" data-ar="النفط">Oil (Brent)</div><div class="metric-value">$71.92</div><div class="metric-change negative">▼ Near 5-Month Low</div></div>
             <div class="metric-card"><div class="metric-label" data-en="Gold" data-ar="الذهب">Gold</div><div class="metric-value">$4,100+</div><div class="metric-change positive">▲ Safe Haven</div></div>
+        </div>
+
+        <!-- What Changed -->
+        <div class="section">
+            <h2 data-en="🔄 What Changed Since Last Update (Jul 1)" data-ar="🔄 ما الذي تغيّر منذ آخر تحديث (1 يوليو)">🔄 What Changed Since Last Update (Jul 1)</h2>
+            <ul class="action-items">
+                <li data-en="S&P 500 +125 pts to a record 7,483; Dow +1.14% to 52,900 — but Nasdaq lagged on semiconductor selling" data-ar="ارتفع S&P 500 بمقدار 125 نقطة إلى مستوى قياسي 7,483؛ داو +1.14٪ إلى 52,900 — لكن ناسداك تخلّف بسبب بيع أشباه الموصلات">S&P 500 +125 pts to a record 7,483; Dow +1.14% to 52,900 — but Nasdaq lagged on semiconductor selling</li>
+                <li data-en="VIX fell 18.41 → 15.81 — complacency building just as event risk stacks up" data-ar="انخفض VIX من 18.41 إلى 15.81 — التراخي يتزايد بينما تتراكم مخاطر الأحداث">VIX fell 18.41 → 15.81 — complacency building just as event risk stacks up</li>
+                <li data-en="Brent $73.74 → $71.92 (5-month low) as Hormuz flows partially recover; WTI below $69" data-ar="برنت من 73.74$ إلى 71.92$ (أدنى مستوى في 5 أشهر) مع تعافي جزئي لتدفقات هرمز؛ WTI دون 69$">Brent $73.74 → $71.92 (5-month low) as Hormuz flows partially recover; WTI below $69</li>
+                <li data-en="Unemployment 4.3% → 4.2%; UMich sentiment improved for the first time in 4 months (49.5)" data-ar="البطالة من 4.3٪ إلى 4.2٪؛ تحسنت معنويات المستهلك لأول مرة منذ 4 أشهر (49.5)">Unemployment 4.3% → 4.2%; UMich sentiment improved for the first time in 4 months (49.5)</li>
+                <li data-en="Breadth narrative flipped: advance-decline line at record highs while Mag 7 is down 12.7% MTD" data-ar="انقلبت رواية اتساع السوق: خط التقدم/التراجع عند مستويات قياسية بينما تراجعت Mag 7 بنسبة 12.7٪ شهرياً">Breadth narrative flipped: advance-decline line at record highs while Mag 7 is down 12.7% MTD</li>
+                <li data-en="Risk level lowered 8/10 → 7/10; NEW near-term risk flagged: Section 122 tariff cliff ~Jul 24" data-ar="خُفّض مستوى المخاطر من 8/10 إلى 7/10؛ مخاطرة جديدة قريبة: انتهاء تعريفة القسم 122 ~24 يوليو">Risk level lowered 8/10 → 7/10; NEW near-term risk flagged: Section 122 tariff cliff ~Jul 24</li>
+            </ul>
+        </div>
+
+        <!-- Catalyst Calendar -->
+        <div class="section">
+            <h2 data-en="📅 Catalyst Calendar" data-ar="📅 تقويم المحفزات">📅 Catalyst Calendar</h2>
+            <table class="data-table" id="catalyst-table">
+                <tr><th data-en="Date" data-ar="التاريخ">Date</th><th data-en="Countdown" data-ar="العد التنازلي">Countdown</th><th data-en="Event" data-ar="الحدث">Event</th><th data-en="Why It Matters" data-ar="لماذا يهم">Why It Matters</th></tr>
+                <tr><td><strong>Jul 7</strong></td><td data-event-date="2026-07-07"></td><td data-en="Forced-labor tariff hearings (USTR)" data-ar="جلسات استماع تعريفات العمل القسري">Forced-labor tariff hearings (USTR)</td><td data-en="10-12.5% tariffs on 60+ economies advance to hearing stage" data-ar="تعريفات 10-12.5٪ على أكثر من 60 اقتصاداً تدخل مرحلة الجلسات">10-12.5% tariffs on 60+ economies advance to hearing stage</td></tr>
+                <tr><td><strong>Jul 14</strong></td><td data-event-date="2026-07-14"></td><td data-en="June CPI release (8:30 AM ET)" data-ar="صدور تضخم يونيو (8:30 صباحاً بتوقيت الشرق)">June CPI release (8:30 AM ET)</td><td data-en="First read on whether falling oil breaks the 3-month inflation acceleration" data-ar="أول قراءة لمعرفة ما إذا كان هبوط النفط سيكسر تسارع التضخم">First read on whether falling oil breaks the 3-month inflation acceleration</td></tr>
+                <tr><td><strong>~Jul 15</strong></td><td data-event-date="2026-07-15"></td><td data-en="Q2 earnings season kicks off (major banks)" data-ar="انطلاق موسم أرباح الربع الثاني (البنوك الكبرى)">Q2 earnings season kicks off (major banks)</td><td data-en="Margin-compression thesis (14.8% → 14.2%) gets tested with real numbers" data-ar="اختبار فرضية انضغاط الهوامش (14.8٪ ← 14.2٪) بأرقام حقيقية">Margin-compression thesis (14.8% → 14.2%) gets tested with real numbers</td></tr>
+                <tr><td><strong>~Jul 24</strong></td><td data-event-date="2026-07-24"></td><td data-en="Section 122 tariff expiry" data-ar="انتهاء تعريفة القسم 122">Section 122 tariff expiry</td><td data-en="10% global tariff lapses unless Congress acts — biggest near-term trade catalyst" data-ar="تسقط التعريفة العالمية 10٪ ما لم يتحرك الكونغرس — أكبر محفز تجاري قريب">10% global tariff lapses unless Congress acts — biggest near-term trade catalyst</td></tr>
+                <tr><td><strong>Jul 28-29</strong></td><td data-event-date="2026-07-29"></td><td data-en="FOMC rate decision" data-ar="قرار الفائدة الفيدرالي">FOMC rate decision</td><td data-en="Market prices a hold; any hawkish surprise hits a market at record highs with VIX at 15.8" data-ar="السوق يسعّر التثبيت؛ أي مفاجأة متشددة تضرب سوقاً عند قممه القياسية">Market prices a hold; any hawkish surprise hits a market at record highs with VIX at 15.8</td></tr>
+                <tr><td><strong>Jul 31</strong></td><td data-event-date="2026-07-31"></td><td data-en="UMich July consumer sentiment (final)" data-ar="معنويات المستهلك النهائية ليوليو">UMich July consumer sentiment (final)</td><td data-en="Confirms whether June's bounce off record lows was a turn or a blip" data-ar="يؤكد ما إذا كان ارتداد يونيو تحولاً أم مجرد وميض">Confirms whether June's bounce off record lows was a turn or a blip</td></tr>
+            </table>
+        </div>
+
+        <!-- Trend Tracker -->
+        <div class="section">
+            <h2 data-en="📈 Trend Tracker (Update-over-Update)" data-ar="📈 متتبع الاتجاه (بين التحديثات)">📈 Trend Tracker (Update-over-Update)</h2>
+            <table class="data-table">
+                <tr><th data-en="Metric" data-ar="المؤشر">Metric</th><th data-en="Latest" data-ar="الأحدث">Latest</th><th data-en="Previous" data-ar="السابق">Previous</th><th data-en="Change" data-ar="التغير">Change</th><th data-en="Trend" data-ar="الاتجاه">Trend</th></tr>
+                <tbody id="trend-body"></tbody>
+            </table>
+            <p style="margin-top:10px;color:#b0b0b0;font-size:0.85em;" data-en="Trend lines build automatically as daily updates accumulate history." data-ar="تتكوّن خطوط الاتجاه تلقائياً مع تراكم التحديثات اليومية.">Trend lines build automatically as daily updates accumulate history.</p>
         </div>
 
         <!-- Risk Assessment -->
@@ -429,7 +505,7 @@
 
         <!-- Footer -->
         <div class="footer">
-            <p data-en="📊 Weekly Market Analysis Dashboard | Updated: " data-ar="📊 تحليل السوق الأسبوعي | تم التحديث: ">📊 Weekly Market Analysis Dashboard | Updated: <span id="footer-date">Loading...</span></p>
+            <p><span data-en="📊 Weekly Market Analysis Dashboard | Updated: " data-ar="📊 تحليل السوق الأسبوعي | تم التحديث: ">📊 Weekly Market Analysis Dashboard | Updated: </span><span id="footer-date">Loading...</span></p>
             <p data-en="Disclaimer: This analysis is for educational purposes. Not financial advice. Consult with a financial advisor before making investment decisions." data-ar="تنويه: هذا التحليل لأغراض تعليمية">Disclaimer: For educational purposes only. Not financial advice. Consult advisor before investing.</p>
             <p data-en="Data Sources: Federal Reserve, CFTC, BLS, CME Group, Bloomberg, CNBC, Reuters" data-ar="مصادر البيانات">Data Sources: Federal Reserve, CFTC, BLS, CME Group, Bloomberg, CNBC, Reuters</p>
         </div>
@@ -437,6 +513,25 @@
 
     <script>
         let currentLanguage = 'en';
+
+        // ==== DAILY-UPDATE DATA BLOCK ====
+        // The scheduled task must update DATA_AS_OF to the actual update time,
+        // and APPEND one row to METRIC_HISTORY per update (keep the ~30 most recent).
+        const DATA_AS_OF = new Date('2026-07-06T16:00:00+03:00');
+        const METRIC_HISTORY = [
+            { date: '2026-07-01', sp500: 7358, vix: 18.41, brent: 73.74, gold: 4050, risk: 8 },
+            { date: '2026-07-06', sp500: 7483, vix: 15.81, brent: 71.92, gold: 4100, risk: 7 }
+        ];
+        // =================================
+
+        const TREND_METRICS = [
+            { key: 'sp500', en: 'S&P 500', ar: 'S&P 500', dp: 0 },
+            { key: 'vix', en: 'VIX', ar: 'مؤشر VIX', dp: 2, inverse: true },
+            { key: 'brent', en: 'Oil — Brent ($)', ar: 'النفط — برنت ($)', dp: 2 },
+            { key: 'gold', en: 'Gold ($)', ar: 'الذهب ($)', dp: 0 },
+            { key: 'risk', en: 'Risk Level (/10)', ar: 'مستوى المخاطر (/10)', dp: 0, inverse: true }
+        ];
+
         function switchLanguage(event, lang) {
             currentLanguage = lang;
             const html = document.documentElement;
@@ -450,24 +545,86 @@
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
             updateTimestamps();
+            renderTrends();
             localStorage.setItem('preferredLanguage', lang);
         }
+
         function updateTimestamps() {
-            const now = new Date();
-            if (currentLanguage === 'ar') {
-                const formatter = new Intl.DateTimeFormat('ar-SA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Asia/Riyadh' });
-                document.getElementById('update-time').textContent = formatter.format(now);
-            } else {
-                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Riyadh' };
-                document.getElementById('update-time').textContent = now.toLocaleDateString('en-US', options);
-            }
+            // Show the DATA snapshot time, not the current clock time.
+            const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Riyadh' };
+            const locale = currentLanguage === 'ar' ? 'ar-SA' : 'en-US';
+            const stamp = new Intl.DateTimeFormat(locale, opts).format(DATA_AS_OF);
+            const headerEl = document.getElementById('update-time');
+            const footerEl = document.getElementById('footer-date');
+            if (headerEl) headerEl.textContent = stamp;
+            if (footerEl) footerEl.textContent = stamp;
         }
+
+        function renderCountdowns() {
+            const now = new Date();
+            const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            document.querySelectorAll('[data-event-date]').forEach(cell => {
+                const parts = cell.getAttribute('data-event-date').split('-').map(Number);
+                const eventDate = new Date(parts[0], parts[1] - 1, parts[2]);
+                const days = Math.round((eventDate - todayMidnight) / 86400000);
+                let en, ar;
+                if (days < 0) { en = 'Passed'; ar = 'انقضى'; }
+                else if (days === 0) { en = 'TODAY'; ar = 'اليوم'; }
+                else if (days === 1) { en = 'Tomorrow'; ar = 'غداً'; }
+                else { en = 'in ' + days + ' days'; ar = 'بعد ' + days + ' أيام'; }
+                cell.setAttribute('data-en', en);
+                cell.setAttribute('data-ar', ar);
+                cell.textContent = currentLanguage === 'ar' ? ar : en;
+                if (days >= 0 && days <= 3) { cell.style.color = '#f44336'; cell.style.fontWeight = '700'; }
+                else if (days > 3 && days <= 10) { cell.style.color = '#ff9800'; cell.style.fontWeight = '600'; }
+            });
+        }
+
+        function fmtVal(v, dp) {
+            return Number(v).toLocaleString('en-US', { minimumFractionDigits: dp, maximumFractionDigits: dp });
+        }
+
+        function sparkline(values) {
+            if (values.length < 2) return '—';
+            const w = 120, h = 30;
+            const min = Math.min(...values), max = Math.max(...values);
+            const span = (max - min) || 1;
+            const pts = values.map((v, i) =>
+                (i * w / (values.length - 1)).toFixed(1) + ',' + (h - 4 - (v - min) / span * (h - 8)).toFixed(1)
+            ).join(' ');
+            return '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" style="overflow:visible;"><polyline points="' + pts + '" fill="none" stroke="#4db8ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        }
+
+        function renderTrends() {
+            const tbody = document.getElementById('trend-body');
+            if (!tbody) return;
+            const latest = METRIC_HISTORY[METRIC_HISTORY.length - 1];
+            const prev = METRIC_HISTORY.length > 1 ? METRIC_HISTORY[METRIC_HISTORY.length - 2] : null;
+            tbody.innerHTML = TREND_METRICS.map(m => {
+                const vals = METRIC_HISTORY.map(r => r[m.key]).filter(v => v != null);
+                const cur = latest[m.key];
+                const pr = prev ? prev[m.key] : null;
+                let delta = '—', cls = 'neutral';
+                if (pr != null && cur != null) {
+                    const d = cur - pr;
+                    const pct = d / pr * 100;
+                    const good = m.inverse ? d < 0 : d > 0;
+                    cls = d === 0 ? 'neutral' : (good ? 'positive' : 'negative');
+                    const arrow = d > 0 ? '▲ +' : d < 0 ? '▼ ' : '';
+                    delta = arrow + fmtVal(d, m.dp) + ' (' + (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%)';
+                }
+                const label = currentLanguage === 'ar' ? m.ar : m.en;
+                return '<tr><td><strong>' + label + '</strong></td><td>' + fmtVal(cur, m.dp) + '</td><td>' + (pr != null ? fmtVal(pr, m.dp) : '—') + '</td><td class="' + cls + '">' + delta + '</td><td>' + sparkline(vals) + '</td></tr>';
+            }).join('');
+        }
+
         window.addEventListener('DOMContentLoaded', function() {
+            renderCountdowns();
+            renderTrends();
             const savedLanguage = localStorage.getItem('preferredLanguage') || 'en';
             if (savedLanguage === 'ar') document.querySelector('.lang-btn:nth-child(2)').click();
             updateTimestamps();
         });
-        setInterval(updateTimestamps, 60000);
     </script>
 </body>
 </html>
