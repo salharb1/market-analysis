@@ -65,6 +65,11 @@
         .exec-card { background: rgba(77, 184, 255, 0.06); border: 1px solid rgba(77, 184, 255, 0.25); border-radius: 8px; padding: 18px; }
         .gauge-track { position: relative; height: 10px; border-radius: 5px; background: linear-gradient(90deg, #4caf50 0%, #ff9800 55%, #f44336 100%); margin-top: 14px; }
         .gauge-marker { position: absolute; top: -5px; width: 4px; height: 20px; background: #fff; border-radius: 2px; box-shadow: 0 0 6px rgba(255,255,255,0.8); }
+        .trigger-row { margin-bottom: 18px; }
+        .trigger-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; gap: 10px; flex-wrap: wrap; }
+        .trigger-bar-track { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.08); overflow: hidden; }
+        .trigger-bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+        .trigger-act { color: #b0b0b0; font-size: 0.85em; margin-top: 5px; }
         @media (max-width: 768px) { .header h1 { font-size: 1.8em; } .section { padding: 20px; } .metric-card { padding: 15px; } .metric-value { font-size: 1.5em; } }
     </style>
 </head>
@@ -111,14 +116,9 @@
                 <li data-en="Hold the 60/25/15 defensive allocation — do NOT add risk before the Jul 14 CPI and the ~Jul 24 tariff decision" data-ar="حافظ على التوزيع الدفاعي 60/25/15 — لا تُضِف مخاطر قبل تضخم 14 يوليو وقرار التعريفات ~24 يوليو">Hold the 60/25/15 defensive allocation — do NOT add risk before the Jul 14 CPI and the ~Jul 24 tariff decision</li>
                 <li data-en="Set alerts on the key levels below — they are the triggers, not the news headlines" data-ar="ضع تنبيهات على المستويات الرئيسية أدناه — فهي المحفزات وليست عناوين الأخبار">Set alerts on the key levels below — they are the triggers, not the news headlines</li>
             </ul>
-            <h3 data-en="Key Levels to Watch" data-ar="مستويات رئيسية للمراقبة">Key Levels to Watch</h3>
-            <table class="data-table">
-                <tr><th data-en="Level" data-ar="المستوى">Level</th><th data-en="Meaning / Action" data-ar="المعنى / الإجراء">Meaning / Action</th></tr>
-                <tr><td><strong>S&P 500 &lt; 7,100</strong></td><td data-en="Correction underway — start buying quality dividend names in tranches" data-ar="تصحيح جارٍ — ابدأ شراء أسهم التوزيعات الجيدة على دفعات">Correction underway — start buying quality dividend names in tranches</td></tr>
-                <tr><td><strong>VIX &gt; 25</strong></td><td data-en="De-risk: cut equities 10-15%, add bonds" data-ar="خفّض المخاطر: قلّص الأسهم 10-15٪ وأضف سندات">De-risk: cut equities 10-15%, add bonds</td></tr>
-                <tr><td><strong data-en="Oil &gt; $85" data-ar="النفط &gt; 85$">Oil &gt; $85</strong></td><td data-en="Hormuz re-escalation — add energy 5-10%, expect inflation re-acceleration" data-ar="تصعيد جديد في هرمز — أضف طاقة 5-10٪ وتوقّع عودة تسارع التضخم">Hormuz re-escalation — add energy 5-10%, expect inflation re-acceleration</td></tr>
-                <tr><td><strong data-en="Gold &lt; $4,000" data-ar="الذهب &lt; 4,000$">Gold &lt; $4,000</strong></td><td data-en="Add to hedge — target $4,500-5,000 on any Iran re-escalation" data-ar="عزّز التحوط — الهدف 4,500-5,000$ عند أي تصعيد إيراني">Add to hedge — target $4,500-5,000 on any Iran re-escalation</td></tr>
-            </table>
+            <h3 data-en="Trigger Proximity — How Close Is Each Level?" data-ar="قرب المحفزات — كم يبعد كل مستوى؟">Trigger Proximity — How Close Is Each Level?</h3>
+            <div id="trigger-meters"></div>
+            <p style="color:#b0b0b0;font-size:0.85em;" data-en="Bars fill as the market approaches each trigger. Computed automatically from the latest data." data-ar="تمتلئ الأشرطة كلما اقترب السوق من كل محفز. تُحسب تلقائياً من أحدث البيانات.">Bars fill as the market approaches each trigger. Computed automatically from the latest data.</p>
         </div>
 
         <!-- Market Summary -->
@@ -169,6 +169,16 @@
                 <tbody id="trend-body"></tbody>
             </table>
             <p style="margin-top:10px;color:#b0b0b0;font-size:0.85em;" data-en="Trend lines build automatically as daily updates accumulate history." data-ar="تتكوّن خطوط الاتجاه تلقائياً مع تراكم التحديثات اليومية.">Trend lines build automatically as daily updates accumulate history.</p>
+        </div>
+
+        <!-- Call Scorecard -->
+        <div class="section">
+            <h2 data-en="🎯 Call Scorecard — Is the Analysis Working?" data-ar="🎯 سجل التوصيات — هل التحليل ناجح؟">🎯 Call Scorecard — Is the Analysis Working?</h2>
+            <table class="data-table">
+                <tr><th data-en="Date" data-ar="التاريخ">Date</th><th data-en="Call Made" data-ar="التوصية">Call Made</th><th data-en="S&P Then" data-ar="S&P حينها">S&P Then</th><th data-en="S&P Since" data-ar="S&P منذئذٍ">S&P Since</th><th data-en="Verdict" data-ar="الحكم">Verdict</th></tr>
+                <tbody id="scorecard-body"></tbody>
+            </table>
+            <p style="margin-top:10px;color:#b0b0b0;font-size:0.85em;" data-en="Verdicts are auto-scored against the S&P 500: a defensive call 'wins' when the market falls after it. Calls under ±2% market move are marked 'Too early'. This table keeps the analysis honest — if the defensive tilt keeps costing upside, it will say so." data-ar="تُقيَّم الأحكام تلقائياً مقابل S&P 500: التوصية الدفاعية 'تربح' عندما يهبط السوق بعدها. التحركات دون ±2٪ تُعتبر 'مبكرة جداً'. هذا الجدول يُبقي التحليل صادقاً.">Verdicts are auto-scored against the S&P 500: a defensive call 'wins' when the market falls after it. Calls under ±2% market move are marked 'Too early'. This table keeps the analysis honest — if the defensive tilt keeps costing upside, it will say so.</p>
         </div>
 
         <!-- Risk Assessment -->
@@ -522,6 +532,20 @@
             { date: '2026-07-01', sp500: 7358, vix: 18.41, brent: 73.74, gold: 4050, risk: 8 },
             { date: '2026-07-06', sp500: 7483, vix: 15.81, brent: 71.92, gold: 4100, risk: 7 }
         ];
+        // CALL_LOG: append a row when the recommendation meaningfully changes (not every day).
+        // dir: 'defensive' (wins when market falls) or 'bullish' (wins when market rises).
+        const CALL_LOG = [
+            { date: '2026-07-01', dir: 'defensive', sp500: 7358, en: 'Risk 8/10 — cut equities 70%→60%, rotate to defensives, avoid tech overweight', ar: 'مخاطر 8/10 — خفض الأسهم من 70٪ إلى 60٪ والتحول للقطاعات الدفاعية وتجنب زيادة وزن التقنية' },
+            { date: '2026-07-06', dir: 'defensive', sp500: 7483, en: 'Risk 7/10 — hold 60/25/15, trim high-P/E tech into record highs, no new risk before Jul 14 CPI & Jul 24 tariff cliff', ar: 'مخاطر 7/10 — الحفاظ على 60/25/15 وتقليص التقنية عالية المضاعفات وعدم إضافة مخاطر قبل تضخم 14 يوليو وتعريفات 24 يوليو' }
+        ];
+        // TRIGGERS: adjust levels only when the strategy's key levels change.
+        // dirn 'above' = triggers when the metric RISES to the level; 'below' = when it FALLS to it.
+        const TRIGGERS = [
+            { key: 'sp500', level: 7100, dirn: 'below', name_en: 'S&P 500 below 7,100', name_ar: 'S&P 500 دون 7,100', act_en: 'Correction underway — start buying quality dividend names in tranches', act_ar: 'تصحيح جارٍ — ابدأ شراء أسهم التوزيعات الجيدة على دفعات' },
+            { key: 'vix', level: 25, dirn: 'above', name_en: 'VIX above 25', name_ar: 'VIX فوق 25', act_en: 'De-risk: cut equities 10-15%, add bonds', act_ar: 'خفّض المخاطر: قلّص الأسهم 10-15٪ وأضف سندات' },
+            { key: 'brent', level: 85, dirn: 'above', name_en: 'Oil (Brent) above $85', name_ar: 'النفط (برنت) فوق 85$', act_en: 'Hormuz re-escalation — add energy 5-10%, expect inflation re-acceleration', act_ar: 'تصعيد جديد في هرمز — أضف طاقة 5-10٪ وتوقّع عودة تسارع التضخم' },
+            { key: 'gold', level: 4000, dirn: 'below', name_en: 'Gold below $4,000', name_ar: 'الذهب دون 4,000$', act_en: 'Add to hedge — target $4,500-5,000 on any Iran re-escalation', act_ar: 'عزّز التحوط — الهدف 4,500-5,000$ عند أي تصعيد إيراني' }
+        ];
         // =================================
 
         const TREND_METRICS = [
@@ -546,6 +570,8 @@
             event.target.classList.add('active');
             updateTimestamps();
             renderTrends();
+            renderTriggers();
+            renderScorecard();
             localStorage.setItem('preferredLanguage', lang);
         }
 
@@ -618,9 +644,56 @@
             }).join('');
         }
 
+        function renderTriggers() {
+            const box = document.getElementById('trigger-meters');
+            if (!box) return;
+            const latest = METRIC_HISTORY[METRIC_HISTORY.length - 1];
+            const ar = currentLanguage === 'ar';
+            box.innerHTML = TRIGGERS.map(t => {
+                const cur = latest[t.key];
+                if (cur == null) return '';
+                const moveNeeded = t.dirn === 'above' ? (t.level - cur) / cur * 100 : (cur - t.level) / cur * 100;
+                const triggered = moveNeeded <= 0;
+                const fill = triggered ? 100 : Math.max(0, Math.min(100, 100 - moveNeeded * 5));
+                const color = (triggered || fill > 85) ? '#f44336' : fill > 60 ? '#ff9800' : '#4caf50';
+                const name = ar ? t.name_ar : t.name_en;
+                const act = ar ? t.act_ar : t.act_en;
+                const curTxt = (ar ? 'الآن: ' : 'now: ') + fmtVal(cur, cur < 100 ? 2 : 0);
+                const dist = triggered
+                    ? (ar ? '⚠️ مُفعّل — نفّذ الإجراء' : '⚠️ TRIGGERED — act on it')
+                    : (ar ? 'يبعد ' + moveNeeded.toFixed(1) + '٪' : moveNeeded.toFixed(1) + '% away');
+                return '<div class="trigger-row">'
+                    + '<div class="trigger-head"><strong>' + name + '</strong> <span style="color:#b0b0b0;font-size:0.85em;">(' + curTxt + ')</span>'
+                    + '<span style="color:' + color + ';font-weight:600;">' + dist + '</span></div>'
+                    + '<div class="trigger-bar-track"><div class="trigger-bar-fill" style="width:' + fill + '%;background:' + color + ';"></div></div>'
+                    + '<div class="trigger-act">' + act + '</div></div>';
+            }).join('');
+        }
+
+        function renderScorecard() {
+            const tbody = document.getElementById('scorecard-body');
+            if (!tbody) return;
+            const latestSP = METRIC_HISTORY[METRIC_HISTORY.length - 1].sp500;
+            const ar = currentLanguage === 'ar';
+            tbody.innerHTML = CALL_LOG.map(c => {
+                const pct = (latestSP - c.sp500) / c.sp500 * 100;
+                const aged = Math.abs(pct) >= 2;
+                let verdict, cls;
+                if (!aged) { verdict = ar ? 'مبكر جداً' : 'Too early'; cls = 'neutral'; }
+                else if ((c.dir === 'defensive') === (pct < 0)) { verdict = ar ? 'صائبة حتى الآن' : 'Right so far'; cls = 'positive'; }
+                else if (c.dir === 'defensive') { verdict = ar ? 'كلفت صعوداً حتى الآن' : 'Costing upside so far'; cls = 'negative'; }
+                else { verdict = ar ? 'خاطئة حتى الآن' : 'Wrong so far'; cls = 'negative'; }
+                return '<tr><td>' + c.date + '</td><td>' + (ar ? c.ar : c.en) + '</td><td>' + c.sp500.toLocaleString('en-US') + '</td>'
+                    + '<td class="' + (pct >= 0 ? 'positive' : 'negative') + '">' + (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%</td>'
+                    + '<td class="' + cls + '"><strong>' + verdict + '</strong></td></tr>';
+            }).join('');
+        }
+
         window.addEventListener('DOMContentLoaded', function() {
             renderCountdowns();
             renderTrends();
+            renderTriggers();
+            renderScorecard();
             const savedLanguage = localStorage.getItem('preferredLanguage') || 'en';
             if (savedLanguage === 'ar') document.querySelector('.lang-btn:nth-child(2)').click();
             updateTimestamps();
