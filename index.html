@@ -126,12 +126,12 @@
             <div class="metric-card"><div class="metric-label" data-en="S&P 500" data-ar="مؤشر S&P 500">S&P 500</div><div class="metric-value">7,544</div><div class="metric-change positive">▲ +0.81%</div></div>
             <div class="metric-card"><div class="metric-label" data-en="Nasdaq" data-ar="ناسداك">Nasdaq</div><div class="metric-value">26,207</div><div class="metric-change positive">▲ +1.30%</div></div>
             <div class="metric-card"><div class="metric-label" data-en="Dow Jones" data-ar="داو جونز">Dow Jones</div><div class="metric-value">52,487</div><div class="metric-change positive">▲ +0.27%</div></div>
-            <div class="metric-card"><div class="metric-label" data-en="VIX" data-ar="VIX">VIX</div><div class="metric-value">15.84</div><div class="metric-change neutral" data-en="Flat despite strikes" data-ar="ثابت رغم الضربات">Flat despite strikes</div></div>
+            <div class="metric-card"><div class="metric-label" data-en="VIX" data-ar="VIX">VIX</div><div class="metric-value">15.84</div><div class="metric-change negative">▼ -6.27%</div></div>
             <div class="metric-card"><div class="metric-label" data-en="Fed Funds Rate" data-ar="سعر الفيد">Fed Funds Rate</div><div class="metric-value">3.5-3.75%</div><div class="metric-change neutral">Held; Hawkish Bias</div></div>
             <div class="metric-card"><div class="metric-label" data-en="Inflation (CPI)" data-ar="التضخم">Inflation (CPI)</div><div class="metric-value">4.2%</div><div class="metric-change negative">May data; June due Jul 14</div></div>
             <div class="metric-card"><div class="metric-label" data-en="Unemployment" data-ar="البطالة">Unemployment</div><div class="metric-value">4.2%</div><div class="metric-change positive">↓ Ticked Down</div></div>
-            <div class="metric-card"><div class="metric-label" data-en="Oil (Brent)" data-ar="النفط">Oil (Brent)</div><div class="metric-value">$77.40</div><div class="metric-change negative" data-en="▲ War premium back" data-ar="▲ عودة علاوة الحرب">▲ War premium back</div></div>
-            <div class="metric-card"><div class="metric-label" data-en="Gold" data-ar="الذهب">Gold</div><div class="metric-value">$4,132</div><div class="metric-change positive">▲ Safe Haven</div></div>
+            <div class="metric-card"><div class="metric-label" data-en="Oil (Brent)" data-ar="النفط">Oil (Brent)</div><div class="metric-value">$76.26</div><div class="metric-change negative">▼ -0.05%</div></div>
+            <div class="metric-card"><div class="metric-label" data-en="Gold" data-ar="الذهب">Gold</div><div class="metric-value">$4,122</div><div class="metric-change negative">▼ -0.20%</div></div>
         </div>
 
         <!-- What Changed -->
@@ -526,11 +526,11 @@
         // ==== DAILY-UPDATE DATA BLOCK ====
         // The scheduled task must update DATA_AS_OF to the actual update time,
         // and APPEND one row to METRIC_HISTORY per update (keep the ~30 most recent).
-        const DATA_AS_OF = new Date('2026-07-10T19:00:00+03:00');
+        const DATA_AS_OF = new Date('2026-07-10T09:50:58+03:00');
         const METRIC_HISTORY = [
             { date: '2026-07-01', sp500: 7358, vix: 18.41, brent: 73.74, gold: 4050, risk: 8 },
             { date: '2026-07-06', sp500: 7483, vix: 15.81, brent: 71.92, gold: 4100, risk: 7 },
-            { date: '2026-07-10', sp500: 7544, vix: 15.84, brent: 77.40, gold: 4132, risk: 7 }
+            { date: '2026-07-10', sp500: 7544, vix: 15.84, brent: 76.26, gold: 4122, risk: 7 }
         ];
         // CALL_LOG: append a row when the recommendation meaningfully changes (not every day).
         // dir: 'defensive' (wins when market falls) or 'bullish' (wins when market rises).
