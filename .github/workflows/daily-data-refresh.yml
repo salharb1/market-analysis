@@ -3,7 +3,7 @@ name: Daily market data refresh
 on:
   schedule:
     # 13:05 UTC = 4:05 PM Saudi Arabia (UTC+3), Monday-Friday (markets closed weekends)
-    - cron: '5 13 * * 1-5'
+    - cron: '45 11 * * 1-5'
   workflow_dispatch: {}
 
 permissions:
