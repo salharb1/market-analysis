@@ -137,7 +137,12 @@ def main():
         rows = re.findall(r"\{[^}]*\}", body)
         # Drop any existing row for today so a rerun refreshes it in place.
         prior_rows = [r for r in rows if f"date: '{today}'" not in r]
-        ref_row = prior_rows[-1] if prior_rows else (rows[-1] if rows else "")
+        today_rows = [r for r in rows if f"date: '{today}'" in r]
+        # Prefer today's existing row as the fallback: the narrative routine
+        # may have already set today's risk score, and its values are fresher
+        # than yesterday's if a quote source fails.
+        ref_row = today_rows[-1] if today_rows else (
+            prior_rows[-1] if prior_rows else (rows[-1] if rows else ""))
         risk_m = re.search(r"risk:\s*(\d+)", ref_row)
         risk = risk_m.group(1) if risk_m else "7"
 
