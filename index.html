@@ -6,12 +6,16 @@
     <title>Economy and Markets Update</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { -webkit-text-size-adjust: 100%; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: #e0e0e0;
             line-height: 1.6;
             padding: 20px;
+            overflow-x: hidden;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
         body[dir="rtl"] { direction: rtl; text-align: right; }
         .container { max-width: 1400px; margin: 0 auto; }
@@ -70,7 +74,40 @@
         .trigger-bar-track { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.08); overflow: hidden; }
         .trigger-bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
         .trigger-act { color: #b0b0b0; font-size: 0.85em; margin-top: 5px; }
-        @media (max-width: 768px) { .header h1 { font-size: 1.8em; } .section { padding: 20px; } .metric-card { padding: 15px; } .metric-value { font-size: 1.5em; } }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .section { padding: 20px; }
+            .metric-card { padding: 15px; }
+            .metric-value { font-size: 1.5em; }
+            .data-table th, .data-table td { padding: 9px 8px; font-size: 0.92em; }
+        }
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .container { max-width: 100%; }
+            .header-top { margin-bottom: 15px; gap: 10px; }
+            .language-toggle { padding: 6px; gap: 6px; }
+            .lang-btn { padding: 6px 12px; font-size: 0.85em; }
+            .header { padding: 18px; margin-bottom: 20px; }
+            .header h1 { font-size: 1.35em; line-height: 1.3; }
+            .header .subtitle { font-size: 0.9em; }
+            .last-updated { font-size: 0.85em; }
+            .section { padding: 14px; margin-bottom: 16px; }
+            .section h2 { font-size: 1.2em; margin-bottom: 14px; }
+            .section h3 { font-size: 1.05em; margin-top: 16px; margin-bottom: 10px; }
+            .market-summary { gap: 12px; }
+            .metric-card { padding: 12px; }
+            .metric-value { font-size: 1.25em; }
+            .metric-label { font-size: 0.8em; }
+            .exec-grid { gap: 10px; }
+            .exec-card { padding: 12px; font-size: 0.92em; }
+            .alert { padding: 12px; gap: 8px; font-size: 0.92em; }
+            .action-items li { padding: 10px; font-size: 0.92em; }
+            .recommendation-box { padding: 14px; }
+            /* Tables scroll horizontally instead of squeezing text unreadably small */
+            .data-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: normal; }
+            .data-table th, .data-table td { padding: 8px 6px; font-size: 0.82em; }
+            .footer { padding: 14px; font-size: 0.8em; }
+        }
     </style>
 </head>
 <body>
@@ -179,7 +216,7 @@
                 <tr><th data-en="Date" data-ar="التاريخ">Date</th><th data-en="Call Made" data-ar="التوصية">Call Made</th><th data-en="S&P Then" data-ar="S&P حينها">S&P Then</th><th data-en="S&P Since" data-ar="S&P منذئذٍ">S&P Since</th><th data-en="Verdict" data-ar="الحكم">Verdict</th></tr>
                 <tbody id="scorecard-body"></tbody>
             </table>
-            <p style="margin-top:10px;color:#b0b0b0;font-size:0.85em;" data-en="Verdicts are auto-scored against the S&P 500: a defensive call 'wins' when the market falls after it. Calls under ±2% market move are marked 'Too early'. This table keeps the analysis honest — if the defensive tilt keeps costing upside, it will say so." data-ar="تُقيَّم الأحكام تلقائياً مقابل S&P 500: التوصية الدفاعية 'تربح' عندما يهبط السوق بعدها. التحركات دون ±2٪ تُعتبر 'مبكرة جداً'. هذا الجدول يُبقي التحليل صادقاً.">Verdicts are auto-scored against the S&P 500: a defensive call 'wins' when the market falls after it. Calls under ±2% market move are marked 'Too early'. This table keeps the analysis honest — if the defensive tilt keeps costing upside, it will say so.</p>
+            <p style="margin-top:10px;color:#b0b0b0;font-size:0.85em;" data-en="Shows only the current outstanding call, auto-scored against the S&P 500: a defensive call 'wins' when the market falls after it. Moves under ±2% are marked 'Too early'. Replaced (not appended) whenever the stance meaningfully changes, so this section stays short." data-ar="يعرض التوصية القائمة الحالية فقط، وتُقيَّم تلقائياً مقابل S&P 500: التوصية الدفاعية 'تربح' عندما يهبط السوق بعدها. التحركات دون ±2٪ تُعتبر 'مبكرة جداً'. تُستبدل (لا تُضاف) كلما تغيّر الموقف بشكل جوهري، ليبقى هذا القسم قصيراً.">Shows only the current outstanding call, auto-scored against the S&P 500. Moves under ±2% are marked 'Too early'. Replaced (not appended) whenever the stance meaningfully changes, so this section stays short.</p>
         </div>
 
         <!-- Risk Assessment -->
@@ -576,17 +613,10 @@
             { date: '2026-07-19', sp500: 7458, vix: 18.77, brent: 88.10, gold: 4020, risk: 10 },
             { date: '2026-07-20', sp500: 7458, vix: 18.77, brent: 90.30, gold: 4010, risk: 10 }
         ];
-        // CALL_LOG: append a row when the recommendation meaningfully changes (not every day).
+        // CALL_LOG: keep ONLY the single most recent entry — replace it (don't append)
+        // whenever the recommendation meaningfully changes, so this list never grows.
         // dir: 'defensive' (wins when market falls) or 'bullish' (wins when market rises).
         const CALL_LOG = [
-            { date: '2026-07-01', dir: 'defensive', sp500: 7358, en: 'Risk 8/10 — cut equities 70%→60%, rotate to defensives, avoid tech overweight', ar: 'مخاطر 8/10 — خفض الأسهم من 70٪ إلى 60٪ والتحول للقطاعات الدفاعية وتجنب زيادة وزن التقنية' },
-            { date: '2026-07-06', dir: 'defensive', sp500: 7483, en: 'Risk 7/10 — hold 60/25/15, trim high-P/E tech into record highs, no new risk before Jul 14 CPI & Jul 24 tariff cliff', ar: 'مخاطر 7/10 — الحفاظ على 60/25/15 وتقليص التقنية عالية المضاعفات وعدم إضافة مخاطر قبل تضخم 14 يوليو وتعريفات 24 يوليو' },
-            { date: '2026-07-10', dir: 'defensive', sp500: 7544, en: 'Risk 7→8/10 — Trump declares Iran ceasefire "over," threatens blockade/Kharg Island strike; hold 60/25/15 but add tail hedges (SPX puts/VIX calls) while VIX sits at 15.8 ahead of Jul 14 CPI, Jul 20 Section 301 tariffs, Jul 24 Section 122 sunset, Jul 28-29 FOMC', ar: 'مخاطر 7←8/10 — يعلن ترامب أن الهدنة مع إيران "انتهت" ويهدد بحصار بحري/ضربة لجزيرة خرج؛ الحفاظ على 60/25/15 مع إضافة تحوطات ذيلية (خيارات بيع SPX/خيارات شراء VIX) بينما VIX عند 15.8 قبل تضخم 14 يوليو وتعريفات القسم 301 في 20 يوليو وانتهاء القسم 122 في 24 يوليو والفيدرالي في 28-29 يوليو' },
-            { date: '2026-07-11', dir: 'defensive', sp500: 7554, en: 'Risk 8→9/10 — Kharg Island CONFIRMED struck (not just threatened), Hormuz shipping collapses ~60% to 34 ships/day, the new Iranian Supreme Leader vows revenge after his father was buried; hold 60/25/15 but SIZE UP tail hedges to 1-1.5% of portfolio (from 0.5-1%) ahead of Jul 14 CPI, Jul 14-15 bank earnings, Jul 20 Section 301 tariffs, Jul 24 Section 122 sunset', ar: 'مخاطر 8←9/10 — تأكيد ضرب جزيرة خرج (لا مجرد تهديد)، وانهيار الملاحة في هرمز بنحو 60٪ إلى 34 سفينة/يوم، وتوعّد القائد الأعلى الإيراني الجديد بالانتقام بعد دفن والده؛ الحفاظ على 60/25/15 مع زيادة حجم التحوطات الذيلية إلى 1-1.5٪ من المحفظة (من 0.5-1٪) قبل تضخم 14 يوليو وأرباح البنوك 14-15 يوليو وتعريفات القسم 301 في 20 يوليو وانتهاء القسم 122 في 24 يوليو' },
-            { date: '2026-07-12', dir: 'defensive', sp500: 7554, en: 'Risk 9→10/10 — the naval-blockade trigger fired: IRGC struck a civilian Cyprus-flagged ship in Hormuz and declared the strait closed "until further notice," the US answered with ~140 strikes (largest of the war), Iran hit six Gulf states back; cut equities 60%→50%, raise commodities/hedges 15%→25% (gold to max weight, energy +5pp) per the strategy\'s own rebalancing rules', ar: 'مخاطر 9←10/10 — تفعّل محفز الحصار البحري: ضرب الحرس الثوري الإيراني سفينة مدنية قبرصية العلم في هرمز وأعلن إغلاق المضيق "حتى إشعار آخر"، وردّت الولايات المتحدة بنحو 140 ضربة (الأكبر في الحرب)، وضربت إيران ست دول خليجية رداً على ذلك؛ خفض الأسهم من 60٪ إلى 50٪، ورفع السلع/التحوطات من 15٪ إلى 25٪ (الذهب لأقصى وزن، والطاقة +5 نقاط) وفقاً لقواعد إعادة التوازن الخاصة بالاستراتيجية' },
-            { date: '2026-07-14', dir: 'defensive', sp500: 7515, en: 'Risk holds at 10/10 (ceiling) — the Oil>$85 trigger fired as Brent hit ~$87 on a third night of US strikes and a deadly Iranian missile strike on two UAE tankers; Trump reinstated a formal blockade of Iranian ports + a 20% Hormuz toll. Cut equities 50%→45%, raise energy 10%→15% per the strategy\'s own rules, even as JPMorgan and Wells Fargo posted big earnings beats', ar: 'المخاطر تبقى عند 10/10 (السقف) — تفعّل محفز النفط فوق 85$ مع وصول برنت إلى نحو 87$ بعد ليلة ثالثة من الضربات الأمريكية وهجوم صاروخي إيراني مميت على ناقلتين إماراتيتين؛ وأعاد ترامب فرض حصار رسمي على الموانئ الإيرانية ورسم 20٪ على هرمز. خفض الأسهم من 50٪ إلى 45٪ ورفع الطاقة من 10٪ إلى 15٪ وفقاً لقواعد الاستراتيجية، حتى مع تسجيل جي بي مورغان وويلز فارغو تفوقاً كبيراً في الأرباح' },
-            { date: '2026-07-15', dir: 'defensive', sp500: 7544, en: 'Risk eases 10→9/10 — the first easing in over a week: Trump scrapped the 20% Hormuz toll after Gulf pushback, June CPI surprised cool (3.5%/2.6% core), and Citi/BofA joined JPM/WFC in a sector-wide bank-earnings beat. But the naval blockade itself stays fully in force and Hormuz traffic is down to ~2% of pre-war levels, so the allocation is HELD at 45/25/30 rather than de-risked further; Financials nudged up 7%→8% of equity on the confirmed bank strength', ar: 'تخف المخاطر من 10 إلى 9/10 — أول تخفيف منذ أكثر من أسبوع: ألغى ترامب رسم هرمز 20٪ بعد اعتراض دول الخليج، وفاجأ تضخم يونيو ببرودته (3.5٪/2.6٪ جوهري)، وانضم سيتي وبنك أوف أمريكا إلى جي بي مورغان وويلز فارغو في تفوق أرباح مصرفي شامل. لكن الحصار البحري نفسه لا يزال مُطبَّقاً بالكامل وانهار عبور هرمز إلى نحو 2٪ من مستويات ما قبل الحرب، لذا يبقى التوزيع ثابتاً عند 45/25/30 بدلاً من مزيد من خفض المخاطر؛ ورُفعت المالية قليلاً من 7٪ إلى 8٪ من الأسهم مع تأكيد قوة البنوك' },
-            { date: '2026-07-16', dir: 'defensive', sp500: 7572, en: 'Risk reverses 9→10/10 — back at the ceiling: a US aircraft forcibly disabled a tanker running the blockade toward Kharg Island (the first kinetic interdiction), and Iran retaliated by striking US bases in Kuwait, Bahrain and Jordan for the first time. Separately, a global AI/semiconductor valuation reset hit equities even where earnings were excellent (TSMC beat and raised guidance, still fell as Kospi dropped 7.3%). No mechanical trigger fired, so the allocation stays HELD at 45/25/30, but the tail hedge returns to full size and the tech-avoid guidance widens beyond NVIDIA to the broader semis complex', ar: 'تعود المخاطر من 9 إلى 10/10 — عند السقف مجدداً: عطّلت طائرة أمريكية قسراً ناقلة كانت تخترق الحصار نحو جزيرة خرج (أول اعتراض قسري)، وردّت إيران بضرب قواعد أمريكية في الكويت والبحرين والأردن للمرة الأولى. وعلى صعيد آخر، ضربت إعادة تقييم عالمية لأسهم الذكاء الاصطناعي/أشباه الموصلات الأسهم حتى حيث كانت الأرباح ممتازة (تفوقت تي إس إم سي ورفعت توقعاتها، لكنها تراجعت رغم ذلك مع هبوط كوسبي 7.3٪). لم يتفعّل أي محفز آلي، لذا يبقى التوزيع ثابتاً عند 45/25/30، لكن يعود التحوط الذيلي لكامل حجمه وتتسع توصية تجنب التقنية لتتجاوز إنفيديا إلى مجمع أشباه الموصلات الأوسع' },
             { date: '2026-07-17', dir: 'defensive', sp500: 7534, en: 'Risk holds at 10/10 — for the first time this cycle, BOTH mechanical triggers genuinely fired the same day: Brent cleared $85 (~$85.95) and gold broke below $4,000 (~$3,986-4,007) for the first time on a sustained basis. Thursday\'s real close was worse than premarket data implied (S&P -0.51% to 7,533.77, VIX 18.11), Netflix beat EPS but guided soft and fell 8%+ after hours, and the war widened to Qatar, Kuwait, Jordan with claimed strikes on Bahrain, Oman and Syria (death toll 38). Cut equities 45%→42%, raise gold 12%→15% per the strategy\'s own rebalancing rules — the first allocation change since Jul 14', ar: 'تبقى المخاطر عند 10/10 — لأول مرة في هذه الدورة، تفعّل كلا المحفزين الآليين فعلياً في اليوم نفسه: تجاوز برنت 85$ (~85.95$) وكسر الذهب حاجز 4,000$ (~3,986-4,007$) لأول مرة بشكل مستدام. كان إغلاق الخميس الفعلي أسوأ مما أوحت به بيانات ما قبل السوق (S&P -0.51٪ إلى 7,533.77، VIX 18.11)، وتفوقت نتفليكس في ربحية السهم لكنها وجّهت توقعات ضعيفة وتراجعت أكثر من 8٪ بعد الإغلاق، واتسعت الحرب إلى قطر والكويت والأردن مع ادعاء ضربات على البحرين وعُمان وسوريا (حصيلة القتلى 38). خفض الأسهم من 45٪ إلى 42٪، ورفع الذهب من 12٪ إلى 15٪ وفقاً لقواعد إعادة التوازن الخاصة بالاستراتيجية — أول تغيير في التوزيع منذ 14 يوليو' }
         ];
         // TRIGGERS: adjust levels only when the strategy's key levels change.
