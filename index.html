@@ -164,15 +164,15 @@
 
         <!-- Market Summary -->
         <div class="market-summary">
-            <div class="metric-card"><div class="metric-label" data-en="S&P 500" data-ar="مؤشر S&P 500">S&P 500</div><div class="metric-value">7,724</div><div class="metric-change negative">▼ -0.17%</div></div>
-            <div class="metric-card"><div class="metric-label" data-en="Nasdaq" data-ar="ناسداك">Nasdaq</div><div class="metric-value">26,363</div><div class="metric-change negative">▼ -0.83%</div></div>
-            <div class="metric-card"><div class="metric-label" data-en="Dow Jones" data-ar="داو جونز">Dow Jones</div><div class="metric-value">54,349</div><div class="metric-change positive">▲ +0.49%</div></div>
-            <div class="metric-card"><div class="metric-label" data-en="VIX" data-ar="VIX">VIX</div><div class="metric-value">15.99</div><div class="metric-change negative">▲ +1.14%</div></div>
+            <div class="metric-card"><div class="metric-label" data-en="S&P 500" data-ar="مؤشر S&P 500">S&P 500</div><div class="metric-value">7,710</div><div class="metric-change negative">▼ -0.18%</div></div>
+            <div class="metric-card"><div class="metric-label" data-en="Nasdaq" data-ar="ناسداك">Nasdaq</div><div class="metric-value">26,348</div><div class="metric-change negative">▼ -0.06%</div></div>
+            <div class="metric-card"><div class="metric-label" data-en="Dow Jones" data-ar="داو جونز">Dow Jones</div><div class="metric-value">53,885</div><div class="metric-change negative">▼ -0.85%</div></div>
+            <div class="metric-card"><div class="metric-label" data-en="VIX" data-ar="VIX">VIX</div><div class="metric-value">15.21</div><div class="metric-change negative">▲ +0.40%</div></div>
             <div class="metric-card"><div class="metric-label" data-en="Fed Funds Rate" data-ar="سعر الفيد">Fed Funds Rate</div><div class="metric-value">3.5-3.75%</div><div class="metric-change neutral">Held 9-3, 3 dissents for hike</div></div>
             <div class="metric-card"><div class="metric-label" data-en="Inflation (CPI)" data-ar="التضخم">Inflation (CPI)</div><div class="metric-value">3.5%</div><div class="metric-change positive">↓ June, cooled from May's 4.2%</div></div>
             <div class="metric-card"><div class="metric-label" data-en="Unemployment" data-ar="البطالة">Unemployment</div><div class="metric-value">4.2%</div><div class="metric-change positive">↓ Ticked Down</div></div>
-            <div class="metric-card"><div class="metric-label" data-en="Oil (Brent)" data-ar="النفط">Oil (Brent)</div><div class="metric-value">$81.18</div><div class="metric-change positive">▲ +2.18%</div></div>
-            <div class="metric-card"><div class="metric-label" data-en="Gold" data-ar="الذهب">Gold</div><div class="metric-value">$4,293</div><div class="metric-change positive">▲ +1.11%</div></div>
+            <div class="metric-card"><div class="metric-label" data-en="Oil (Brent)" data-ar="النفط">Oil (Brent)</div><div class="metric-value">$82.03</div><div class="metric-change negative">▼ -0.56%</div></div>
+            <div class="metric-card"><div class="metric-label" data-en="Gold" data-ar="الذهب">Gold</div><div class="metric-value">$4,374</div><div class="metric-change positive">▲ +3.12%</div></div>
         </div>
 
         <!-- What Changed -->
@@ -714,7 +714,7 @@
         // ==== DAILY-UPDATE DATA BLOCK ====
         // The scheduled task must update DATA_AS_OF to the actual update time,
         // and APPEND one row to METRIC_HISTORY per update (keep the ~30 most recent).
-        const DATA_AS_OF = new Date('2026-08-06T16:20:35+03:00');
+        const DATA_AS_OF = new Date('2026-08-07T15:28:25+03:00');
         const METRIC_HISTORY = [
             { date: '2026-07-01', sp500: 7358, vix: 18.41, brent: 73.74, gold: 4050, risk: 8 },
             { date: '2026-07-06', sp500: 7483, vix: 15.81, brent: 71.92, gold: 4100, risk: 7 },
@@ -740,7 +740,8 @@
             { date: '2026-08-03', sp500: 7557, vix: 16.25, brent: 82.91, gold: 4087, risk: 7 },
             { date: '2026-08-04', sp500: 7600, vix: 15.57, brent: 81.53, gold: 4121, risk: 8 },
             { date: '2026-08-05', sp500: 7737, vix: 16.88, brent: 80.10, gold: 4248, risk: 6 },
-            { date: '2026-08-06', sp500: 7724, vix: 15.99, brent: 81.18, gold: 4293, risk: 5 }
+            { date: '2026-08-06', sp500: 7724, vix: 15.99, brent: 81.18, gold: 4293, risk: 5 },
+            { date: '2026-08-07', sp500: 7710, vix: 15.21, brent: 82.03, gold: 4374, risk: 5 }
         ];
         // CALL_LOG: append a new row whenever the recommendation meaningfully changes.
         // NEVER edit or delete old rows — the scorecard's value is that history can't be rewritten.
