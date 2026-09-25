@@ -4,7 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weekly Market Analysis Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta name="description" content="Expert investment analysis and portfolio recommendations, updated weekly.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap">
+    <script>
+        // Apply the saved language before first paint so Arabic users don't see a flash of English/LTR.
+        (function () {
+            try {
+                if (localStorage.getItem('lang') === 'ar') {
+                    document.documentElement.lang = 'ar';
+                    document.documentElement.dir = 'rtl';
+                }
+            } catch (e) {}
+        })();
+    </script>
     <style>
         * {
             margin: 0;
@@ -245,15 +259,6 @@
         .risk-medium { background: #ffc107; }
         .risk-low { background: #4caf50; }
 
-        .chart-container {
-            position: relative;
-            height: 300px;
-            margin-top: 20px;
-            padding: 20px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 8px;
-        }
-
         .action-items {
             list-style: none;
             margin-top: 15px;
@@ -374,6 +379,7 @@
 
         /* ===== RTL (Arabic) overrides ===== */
         [dir="rtl"] body {
+            font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-align: right;
         }
 
@@ -434,7 +440,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <button id="lang-toggle" class="lang-switch" onclick="toggleLanguage()">العربية</button>
+            <button id="lang-toggle" class="lang-switch" type="button" lang="ar" aria-label="Switch to Arabic" onclick="toggleLanguage()">العربية</button>
             <h1 data-i18n="header_title">📈 Weekly Market Analysis Dashboard</h1>
             <p class="subtitle" data-i18n="header_subtitle">Expert Investment Analysis & Portfolio Recommendations</p>
             <div class="last-updated">
@@ -1083,6 +1089,8 @@
     <script>
         // ===== Translations (English / Arabic) =====
         const translations = {
+            page_title: { en: `Weekly Market Analysis Dashboard`, ar: `لوحة تحليل السوق الأسبوعي` },
+            meta_desc: { en: `Expert investment analysis and portfolio recommendations, updated weekly.`, ar: `تحليل استثماري احترافي وتوصيات للمحفظة، محدّثة أسبوعيًا.` },
             header_title: { en: `📈 Weekly Market Analysis Dashboard`, ar: `📈 لوحة تحليل السوق الأسبوعي` },
             header_subtitle: { en: `Expert Investment Analysis & Portfolio Recommendations`, ar: `تحليل استثماري احترافي وتوصيات للمحفظة` },
             last_updated_label: { en: `Last Updated:`, ar: `آخر تحديث:` },
@@ -1274,38 +1282,49 @@
             document.documentElement.lang = lang;
             document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
             applyTranslations(lang);
+
+            document.title = translations.page_title[lang];
+            const meta = document.querySelector('meta[name="description"]');
+            if (meta) { meta.setAttribute('content', translations.meta_desc[lang]); }
+
             const btn = document.getElementById('lang-toggle');
             if (btn) {
-                btn.textContent = (lang === 'ar') ? 'English' : 'العربية';
+                if (lang === 'ar') {
+                    btn.textContent = 'English';
+                    btn.lang = 'en';
+                    btn.setAttribute('aria-label', 'Switch to English');
+                } else {
+                    btn.textContent = 'العربية';
+                    btn.lang = 'ar';
+                    btn.setAttribute('aria-label', 'Switch to Arabic');
+                }
             }
             try { localStorage.setItem('lang', lang); } catch (e) {}
-            updateTimestamps();
+            renderDataDate();
         }
 
         function toggleLanguage() {
             setLanguage(currentLang === 'ar' ? 'en' : 'ar');
         }
 
-        // Update timestamps
-        function updateTimestamps() {
-            const now = new Date();
+        // Date the underlying market data was last refreshed. Update this when you
+        // refresh the figures — it is NOT a live clock.
+        const DATA_UPDATED = new Date('2026-06-30T00:00:00Z');
+
+        function renderDataDate() {
             const locale = (currentLang === 'ar') ? 'ar' : 'en-US';
-            const options = {
+            document.getElementById('update-time').textContent = DATA_UPDATED.toLocaleDateString(locale, {
                 weekday: 'long',
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                timeZoneName: 'short'
-            };
-
-            document.getElementById('update-time').textContent = now.toLocaleDateString(locale, options);
-            document.getElementById('footer-date').textContent = now.toLocaleDateString(locale, {
+                timeZone: 'UTC'
+            });
+            document.getElementById('footer-date').textContent = DATA_UPDATED.toLocaleDateString(locale, {
                 year: 'numeric',
                 month: '2-digit',
-                day: '2-digit'
+                day: '2-digit',
+                timeZone: 'UTC'
             });
         }
 
@@ -1315,9 +1334,6 @@
             try { saved = localStorage.getItem('lang'); } catch (e) {}
             setLanguage(saved === 'ar' ? 'ar' : 'en');
         });
-
-        // Update every minute
-        setInterval(updateTimestamps, 60000);
     </script>
 </body>
 </html>
